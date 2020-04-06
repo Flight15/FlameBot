@@ -12,9 +12,6 @@ client = commands.Bot(command_prefix='$')
 async def on_ready():
     print("The bot is online")
 
-@client.command()
-async def gross(ctx):
-    await ctx.send('we dont talk about him here...')
 
 @client.command()
 async def ping(ctx):
@@ -23,7 +20,10 @@ async def ping(ctx):
 
 @client.command()
 async def rank(ctx, name):
-    await ctx.send("your rank is " + rankmodule.rankcheck(name))
+    if name == "gross":
+        await ctx.send("you dont wanna know...")
+    else:
+        await ctx.send("your rank is " + rankmodule.rankcheck(name))
 
 
 @client.command()
