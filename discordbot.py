@@ -1,3 +1,4 @@
+$heroku buildpacks:set heroku/python
 import discord
 import rankmodule
 import masterymodule
