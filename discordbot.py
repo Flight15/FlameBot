@@ -12,6 +12,9 @@ client = commands.Bot(command_prefix='$')
 async def on_ready():
     print("The bot is online")
 
+@client.command()
+async def gross(ctx):
+    await ctx.send('we dont talk about him here...')
 
 @client.command()
 async def ping(ctx):
