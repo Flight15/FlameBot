@@ -8,10 +8,12 @@ client = discord.Client()
 
 client = commands.Bot(command_prefix='$')
 
+
 @client.event
 async def on_ready():
     print("The bot is online")
     await client.change_presence(activity=discord.Game(name="Flaming SoloQ"))
+
 
 @client.command()
 async def ping(ctx):
@@ -24,6 +26,11 @@ async def rank(ctx, name):
         await ctx.send("you dont wanna know...")
     else:
         await ctx.send("your rank is " + rankmodule.rankcheck(name))
+
+
+@client.command()
+async def dictator(ctx):
+    await ctx.send('all hail the dictator of the hanaalulia, IDOG770')
 
 
 @client.command()
