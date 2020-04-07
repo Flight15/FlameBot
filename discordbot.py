@@ -12,7 +12,7 @@ client = commands.Bot(command_prefix='$')
 @client.event
 async def on_ready():
     print("The bot is online")
-
+    await client.change_presence(activity=None, status='Flaming Gross')
 
 @client.command()
 async def ping(ctx):
