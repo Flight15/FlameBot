@@ -30,7 +30,7 @@ async def rank(ctx, name):
 
 @client.command()
 async def dictator(ctx):
-    await ctx.send('all hail the dictator of the hanaalulia, IDOG770')
+    await ctx.send('all hail the dictator of the הנעלוליה, IDOG770')
 
 
 @client.command()
