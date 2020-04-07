@@ -29,11 +29,6 @@ async def rank(ctx, name):
 
 
 @client.command()
-async def dictator(ctx):
-    await ctx.send('all hail the dictator of the הנעלוליה, IDOG770')
-
-
-@client.command()
 async def mastery(ctx, name):
     await ctx.send("your total mastery score is " + format(masterymodule.masterycheck(name)))
 
