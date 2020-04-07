@@ -11,7 +11,7 @@ client = commands.Bot(command_prefix='$')
 @client.event
 async def on_ready():
     print("The bot is online")
-    await client.change_presence(activity=discord.Game(name="Flaming Gross"))
+    await client.change_presence(activity=discord.Game(name="Flaming SoloQ"))
 
 @client.command()
 async def ping(ctx):
