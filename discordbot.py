@@ -2,6 +2,7 @@ import discord
 import rankmodule
 import masterymodule
 from discord.ext import commands
+import os
 
 client = discord.Client()
 
