@@ -22,8 +22,10 @@ async def ping(ctx):
 
 @client.command()
 async def liberate(ctx):
-    await ctx.send("THE REVOLUTION BEGINS NOW!")
-    await ctx.send("https://voicesfromtheblogs.com/wp-content/uploads/2019/12/che-guevara-quotes.jpg")
+    await ctx.send("FREEDOM")
+    await ctx.send("https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg")
+    await ctx.send('https://media.dayoftheshirt.com/images/shirts/x2UWu/qwertee_for-the-horde_1535836347.large.png')
+    await ctx.send('https://media.giphy.com/media/3DHUG0x7O14tQRfaIo/giphy.gif')
 
 @client.command()
 async def rank(ctx, name):
