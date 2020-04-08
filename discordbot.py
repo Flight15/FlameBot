@@ -4,6 +4,7 @@ import masterymodule
 from discord.ext import commands
 import youtube_dl
 import os
+import wikipedia
 
 client = discord.Client()
 
@@ -28,18 +29,19 @@ async def ping(ctx):
 async def help(ctx):
     author = ctx.message.author
     embed = discord.Embed(
-        colour = discord.Colour.orange()
+        colour=discord.Colour.orange()
     )
     embed.set_author(name='help')
-    embed.add_field(name= '$help', value= 'opens this window....', inline=False)
-    embed.add_field(name= '$ping', value= 'returns pong', inline=False)
-    embed.add_field(name= '$connect', value= 'makes the bot join your voice channel')
-    embed.add_field(name= '$play', value= 'plays youtube link in voice chat', inline=False)
-    embed.add_field(name= '$disconnect', value= 'makes the bot disconnect the voice chat', inline=False)
-    embed.add_field(name= '$rank', value= 'checks the summoners solo queue rank', inline=False)
-    embed.add_field(name= '$mastery', value= 'checks the summoners total mastery score for all champions', inline=False)
+    embed.add_field(name='$help', value='opens this window....', inline=False)
+    embed.add_field(name='$ping', value='returns pong', inline=False)
+    embed.add_field(name='$connect', value='makes the bot join your voice channel')
+    embed.add_field(name='$play', value='plays youtube link in voice chat', inline=False)
+    embed.add_field(name='$disconnect', value='makes the bot disconnect the voice chat', inline=False)
+    embed.add_field(name='$rank', value='checks the summoners solo queue rank', inline=False)
+    embed.add_field(name='$mastery', value='checks the summoners total mastery score for all champions', inline=False)
 
     await ctx.send(author, embed=embed)
+
 
 @client.command()
 async def connect(ctx):
@@ -56,6 +58,13 @@ async def disconnect(ctx):
     if song_there:
         os.remove('song.mp3')
         print('deleted song')
+
+
+@client.command()
+async def wikiran(ctx):
+    wikipedia.set_lang('he')
+    page = wikipedia.random(pages=1)
+    await ctx.send(page)
 
 
 @client.command()
