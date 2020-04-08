@@ -8,7 +8,7 @@ import os
 client = discord.Client()
 
 client = commands.Bot(command_prefix='$')
-
+client.remove_command('help')
 players = {}
 
 
@@ -21,7 +21,24 @@ async def on_ready():
 @client.command()
 async def ping(ctx):
     await ctx.send('pong')
+    await ctx.send('yes, im working')
 
+
+@client.command()
+async def help(ctx):
+    author = ctx.message.author
+    embed = discord.Embed(
+        colour = discord.Colour.orange()
+    )
+    embed.set_author(name='help')
+    embed.add_field(name= '$ping', value= 'returns pong....', inline=False)
+    embed.add_field(name= '$connect', value= 'makes the bot join your voice channel')
+    embed.add_field(name= '$play', value= 'plays youtube link in voice chat', inline=False)
+    embed.add_field(name= '$disconnect', value= 'makes the bot disconnect the voice chat', inline=False)
+    embed.add_field(name= '$rank', value= 'checks the summoners solo queue rank', inline=False)
+    embed.add_field(name= '$mastery', value= 'checks the summoners total mastery score for all champions', inline=False)
+
+    await ctx.send(author, embed=embed)
 
 @client.command()
 async def connect(ctx):
