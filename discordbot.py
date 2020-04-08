@@ -68,11 +68,6 @@ async def wikiran(ctx):
 
 
 @client.command()
-async def anthem(ctx):
-    await ctx.send('!play https://www.youtube.com/watch?v=X3wBsZfHRy4&t=3s')
-
-
-@client.command()
 async def play(ctx, url: str):
     song_there = os.path.isfile('song.mp3')
     try:
