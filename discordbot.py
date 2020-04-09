@@ -124,16 +124,6 @@ async def play(ctx, url: str):
 
 
 @client.command()
-async def liberate(ctx):
-    await ctx.send("FREEDOM")
-    await ctx.send("https://upload.wikimedia.org/wikipedia/commons/5/58/CheHigh.jpg")
-    await ctx.send('https://media.dayoftheshirt.com/images/shirts/x2UWu/qwertee_for-the-horde_1535836347.large.png')
-    await ctx.send('https://media.giphy.com/media/3DHUG0x7O14tQRfaIo/giphy.gif')
-    await ctx.send('https://media.swncdn.com/via/6705-gettyimages-manopjk.jpg')
-    await ctx.send('https://media.discordapp.net/attachments/477860330257645569/697021389022035968/images.png')
-
-
-@client.command()
 async def rank(ctx, name):
     if name == "gross":
         await ctx.send("you dont wanna know...")
