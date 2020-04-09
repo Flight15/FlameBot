@@ -5,17 +5,12 @@ from discord.ext import commands
 import youtube_dl
 import os
 import wikipedia
-client = discord.Client()
 
-client = commands.Bot(command_prefix='$')
+Try = discord.Client()
+client = commands.Bot(command_prefix='@')
+channel = client.get_channel(692336046876262464)
 client.remove_command('help')
 players = {}
-
-
-@client.event
-async def on_member_join(member):
-    channel = client.get_channel(692336046876262464)
-    await channel.send(f'{member} Hi there & Welcome to the Shoe store !')
 
 
 @client.event
@@ -23,12 +18,19 @@ async def on_ready():
     print("The bot is online")
     await client.change_presence(activity=discord.Game(name="Flaming SoloQ"))
 
+@client.event
+async def on_member_join(member):
+    channel = client.get_channel(692336046876262464)
+    await channel.send('Hi there ' f'{member} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
 
 @client.command()
 async def ping(ctx):
     await ctx.send('pong')
     await ctx.send('yes, im working')
 
+@client.command()
+async def what(ctx):
+    await channel.send('hello')
 
 @client.command()
 async def help(ctx):
@@ -40,10 +42,11 @@ async def help(ctx):
     embed.add_field(name='$help', value='opens this window....', inline=False)
     embed.add_field(name='$ping', value='returns pong', inline=False)
     embed.add_field(name='$connect', value='makes the bot join your voice channel')
-    embed.add_field(name='$play', value='plays youtube link in voice chat', inline=False)
     embed.add_field(name='$disconnect', value='makes the bot disconnect the voice chat', inline=False)
+    embed.add_field(name='$play', value='plays youtube link in voice chat', inline=False)
     embed.add_field(name='$rank', value='checks the summoners solo queue rank', inline=False)
     embed.add_field(name='$mastery', value='checks the summoners total mastery score for all champions', inline=False)
+    embed.add_field(name='$word', value='write a random word', inline=False)
 
     await ctx.send(author, embed=embed)
 
@@ -66,7 +69,7 @@ async def disconnect(ctx):
 
 
 @client.command()
-async def wikiran(ctx):
+async def word(ctx):
     wikipedia.set_lang('he')
     page = wikipedia.random(pages=1)
     await ctx.send(page)
@@ -137,4 +140,4 @@ async def mastery(ctx, name):
     await ctx.send("your total mastery score is " + format(masterymodule.masterycheck(name)))
 
 
-client.run('Njk2NzY4ODc3OTQxNjIwODE3.Xotu7w.uWvk0oS-EdcKvYUaowXBjxzFwAE')
+client.run('Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo8xGQ.QkUayTkLInJbJbchQIAiUwd-as4')
