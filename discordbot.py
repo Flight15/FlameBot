@@ -15,7 +15,7 @@ players = {}
 @client.event
 async def on_member_join(member):
     channel = client.get_channel(692336046876262464)
-    await channel.send(f'{member} Welcome to the shoe store')
+    await channel.send(f'{member} Hi there & Welcome to the Shoe store !')
 
 
 @client.event
