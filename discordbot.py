@@ -59,7 +59,6 @@ async def help(ctx):
 
     await author.send(embed=embed)
 
-
 @client.command()
 async def connect(ctx):
     channel = ctx.author.voice.channel
@@ -86,45 +85,10 @@ async def word(ctx):
 
 @client.command()
 async def play(ctx, url: str):
-    song_there = os.path.isfile('song.mp3')
-    try:
-        if song_there:
-            os.remove('song.mp3')
-            print('deleted song')
-    except PermissionError:
-        print('trying to delete songfile but it is being used')
-        await ctx.send('Music is playing')
-        return
-    await ctx.send("prepping the music")
-
-    voice = client.voice_clients[0]
-
-    ydl_opts = {
-        'format': 'bestaudio/best',
-        'postprocessors': [{
-            'key': 'FFmpegExtractAudio',
-            'preferredcodec': 'mp3',
-            'preferredquality': '192',
-        }]
-    }
-
-    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-        print('downloading audio')
-        ydl.download([url])
-    for file in os.listdir('./'):
-        if file.endswith('.mp3'):
-            name = file
-            print(f'Renamed File: {file}')
-            os.rename(file, 'song.mp3')
-
-    voice.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: print(f'{name} has finished playing'))
-    voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 0.2
-
-    nname = name.rsplit('-', 2)
-    await ctx.send(f'Playing {nname}')
-    print('Playing')
-
+    server = ctx.message.guild
+    player = await ctx.create_ytdl_player(url)
+    players[server.id] = player
+    player.start()
 
 @client.command()
 async def rank(ctx, name):
