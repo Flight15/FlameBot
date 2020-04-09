@@ -8,10 +8,10 @@ import wikipedia
 
 version = input("stable or test?\n")
 if version == "stable":
-    build = "Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo9NYg.LXfa-k-72RZ63dIfGRGpq9pOL2E"
+    build = "Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo9vCg.I7mgdkaSudLrYGzAXj1SDFTmnUw"
     prefix = "$"
 else:
-    version = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
+    build = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
     prefix = "@"
 
 Try = discord.Client()
@@ -45,7 +45,6 @@ async def help(ctx):
     embed = discord.Embed(
         colour=discord.Colour.orange()
     )
-    embed.set_author(name='help')
     embed.add_field(name='$help', value='opens this window....', inline=False)
     embed.add_field(name='$ping', value='returns pong', inline=False)
     embed.add_field(name='$connect', value='makes the bot join your voice channel')
@@ -55,7 +54,7 @@ async def help(ctx):
     embed.add_field(name='$mastery', value='checks the summoners total mastery score for all champions', inline=False)
     embed.add_field(name='$word', value='write a random word', inline=False)
 
-    await ctx.send(author, embed=embed)
+    await author.send(embed=embed)
 
 
 @client.command()
