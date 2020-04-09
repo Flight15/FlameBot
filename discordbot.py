@@ -15,7 +15,7 @@ players = {}
 @client.event
 async def on_ready():
     print("The bot is online")
-    await client.change_presence(activity=discord.Game(name="Flaming SoloQ"))
+    await client.change_presence(activity=discord.Game(name="Flaming SoloQ - $help"))
 
 
 @client.event
@@ -110,7 +110,7 @@ async def play(ctx, url: str):
 
     voice.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: print(f'{name} has finished playing'))
     voice.source = discord.PCMVolumeTransformer(voice.source)
-    voice.source.volume = 0.07
+    voice.source.volume = 0.2
 
     nname = name.rsplit('-', 2)
     await ctx.send(f'Playing {nname}')
