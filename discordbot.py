@@ -6,11 +6,18 @@ import youtube_dl
 import os
 import wikipedia
 
+version = input("stable or test?\n")
+if version == "stable":
+    build = "Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo9NYg.LXfa-k-72RZ63dIfGRGpq9pOL2E"
+    prefix = "$"
+else:
+    version = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
+    prefix = "@"
+
 Try = discord.Client()
-client = commands.Bot(command_prefix='$')
+client = commands.Bot(command_prefix=prefix)
 client.remove_command('help')
 players = {}
-
 
 @client.event
 async def on_ready():
@@ -139,5 +146,4 @@ async def rank(ctx, name):
 async def mastery(ctx, name):
     await ctx.send("your total mastery score is " + format(masterymodule.masterycheck(name)))
 
-
-client.run('Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo8xGQ.QkUayTkLInJbJbchQIAiUwd-as4')
+client.run(build)
