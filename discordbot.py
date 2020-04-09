@@ -7,8 +7,7 @@ import os
 import wikipedia
 
 Try = discord.Client()
-client = commands.Bot(command_prefix='@')
-channel = client.get_channel(692336046876262464)
+client = commands.Bot(command_prefix='$')
 client.remove_command('help')
 players = {}
 
@@ -31,9 +30,6 @@ async def ping(ctx):
     await ctx.send('yes, im working')
 
 
-@client.command()
-async def what(ctx):
-    await channel.send('hello')
 
 
 @client.command()
