@@ -5,12 +5,17 @@ from discord.ext import commands
 import youtube_dl
 import os
 import wikipedia
-
 client = discord.Client()
 
 client = commands.Bot(command_prefix='$')
 client.remove_command('help')
 players = {}
+
+
+@client.event
+async def on_member_join(member):
+    channel = client.get_channel(692336046876262464)
+    await channel.send(f'{member} Welcome to the shoe store')
 
 
 @client.event
