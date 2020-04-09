@@ -18,19 +18,23 @@ async def on_ready():
     print("The bot is online")
     await client.change_presence(activity=discord.Game(name="Flaming SoloQ"))
 
+
 @client.event
 async def on_member_join(member):
     channel = client.get_channel(692336046876262464)
     await channel.send('Hi there ' f'{member} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
+
 
 @client.command()
 async def ping(ctx):
     await ctx.send('pong')
     await ctx.send('yes, im working')
 
+
 @client.command()
 async def what(ctx):
     await channel.send('hello')
+
 
 @client.command()
 async def help(ctx):
