@@ -11,7 +11,7 @@ if version == "stable":
     build = "Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo9NYg.LXfa-k-72RZ63dIfGRGpq9pOL2E"
     prefix = "$"
 else:
-    version = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
+    build = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
     prefix = "@"
 
 Try = discord.Client()
