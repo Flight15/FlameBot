@@ -30,17 +30,15 @@ async def on_ready():
 
 @client.event
 async def on_member_join(member):
-    channel = client.get_channel(692336046876262464)
-    await channel.send('Hi there ' f'{member} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
+    channel = client.get_channel(697842970744848394)
+    x = str(member)
+    await channel.send('Hi there ' f'{x.translate({ord(i): None for i in "#123456789"})} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
 
 
 @client.command()
 async def ping(ctx):
     await ctx.send('pong')
     await ctx.send('yes, im working')
-
-
-
 
 @client.command()
 async def help(ctx):
@@ -58,6 +56,7 @@ async def help(ctx):
     embed.add_field(name='$word', value='write a random word', inline=False)
 
     await author.send(embed=embed)
+
 
 @client.command()
 async def connect(ctx):
@@ -85,10 +84,45 @@ async def word(ctx):
 
 @client.command()
 async def play(ctx, url: str):
-    server = ctx.message.guild
-    player = await ctx.create_ytdl_player(url)
-    players[server.id] = player
-    player.start()
+    song_there = os.path.isfile('song.mp3')
+    try:
+        if song_there:
+            os.remove('song.mp3')
+            print('deleted song')
+    except PermissionError:
+        print('trying to delete songfile but it is being used')
+        await ctx.send('Music is playing')
+        return
+    await ctx.send("prepping the music")
+
+    voice = client.voice_clients[0]
+
+    ydl_opts = {
+        'format': 'bestaudio/best',
+        'postprocessors': [{
+            'key': 'FFmpegExtractAudio',
+            'preferredcodec': 'mp3',
+            'preferredquality': '192',
+        }]
+    }
+
+    with youtube_dl.YoutubeDL(ydl_opts) as ydl:
+        print('downloading audio')
+        ydl.download([url])
+    for file in os.listdir('./'):
+        if file.endswith('.mp3'):
+            name = file
+            print(f'Renamed File: {file}')
+            os.rename(file, 'song.mp3')
+
+    voice.play(discord.FFmpegPCMAudio('song.mp3'), after=lambda e: print(f'{name} has finished playing'))
+    voice.source = discord.PCMVolumeTransformer(voice.source)
+    voice.source.volume = 0.2
+
+    nname = name.rsplit('-', 2)
+    await ctx.send(f'Playing {nname}')
+    print('Playing')
+
 
 @client.command()
 async def rank(ctx, name):
@@ -101,5 +135,6 @@ async def rank(ctx, name):
 @client.command()
 async def mastery(ctx, name):
     await ctx.send("your total mastery score is " + format(masterymodule.masterycheck(name)))
+
 
 client.run(build)
