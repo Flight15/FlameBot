@@ -32,7 +32,7 @@ async def on_ready():
 async def on_member_join(member):
     channel = client.get_channel(692336046876262464)
     x = str(member)
-    await channel.send('Hi there ' f'{x.translate({ord(i): None for i in "#123456789"})} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
+    await channel.send('Hi there ' f'{x.translate({ord(i): None for i in "#0123456789"})} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
 
 
 @client.command()
