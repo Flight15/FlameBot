@@ -3,6 +3,7 @@ import rankmodule
 import masterymodule
 from discord.ext import commands
 import youtube_dl
+import random
 import os
 import wikipedia
 
@@ -34,6 +35,53 @@ async def on_member_join(member):
     x = str(member)
     await channel.send('Hi there ' f'{x.translate({ord(i): None for i in "#0123456789"})} & Welcome to the Shoe store !\nhere you can buy some good shoes or just play for fun !\nhave a good visit :smile:')
 
+@client.command()
+async def custom4(ctx, a1, b1, c1, d1, a2, b2, c2, d2):
+     custom = []
+     custom.append(a1), custom.append(b1), custom.append(c1), custom.append(d1), custom.append(a2), custom.append(b2), custom.append(c2), custom.append(d2)
+     aa1=random.choice(custom)
+     custom.remove(aa1)
+     bb1 = random.choice(custom)
+     custom.remove(bb1)
+     cc1 = random.choice(custom)
+     custom.remove(cc1)
+     dd1 = random.choice(custom)
+     custom.remove(dd1)
+     aa2 = random.choice(custom)
+     custom.remove(aa2)
+     bb2 = random.choice(custom)
+     custom.remove(bb2)
+     cc2 = random.choice(custom)
+     custom.remove(cc2)
+     dd2 = random.choice(custom)
+     custom.remove(dd2)
+     await ctx.send('Team 1: '+aa1+' '+bb1+' '+cc1+' '+dd1+'\nTeam 2: '+aa2+' '+bb2+' '+cc2+' '+dd2)
+
+@client.command()
+async def custom5(ctx, a1, b1, c1, d1, e1, a2, b2, c2, d2, e2):
+     custom = []
+     custom.append(a1), custom.append(b1), custom.append(c1), custom.append(d1), custom.append(e1), custom.append(a2), custom.append(b2), custom.append(c2), custom.append(d2), custom.append(e2)
+     aa1=random.choice(custom)
+     custom.remove(aa1)
+     bb1 = random.choice(custom)
+     custom.remove(bb1)
+     cc1 = random.choice(custom)
+     custom.remove(cc1)
+     dd1 = random.choice(custom)
+     custom.remove(dd1)
+     ee1 = random.choice(custom)
+     custom.remove(ee1)
+     aa2 = random.choice(custom)
+     custom.remove(aa2)
+     bb2 = random.choice(custom)
+     custom.remove(bb2)
+     cc2 = random.choice(custom)
+     custom.remove(cc2)
+     dd2 = random.choice(custom)
+     custom.remove(dd2)
+     ee2 = random.choice(custom)
+     custom.remove(ee2)
+     await ctx.send('Team 1: '+aa1+' '+bb1+' '+cc1+' '+dd1+' '+ee1+'\nTeam 2: '+aa2+' '+bb2+' '+cc2+' '+dd2+' '+ee2)
 
 @client.command()
 async def ping(ctx):
@@ -50,10 +98,12 @@ async def help(ctx):
     embed.add_field(name='$ping', value='returns pong', inline=False)
     embed.add_field(name='$connect', value='makes the bot join your voice channel')
     embed.add_field(name='$disconnect', value='makes the bot disconnect the voice chat', inline=False)
-    embed.add_field(name='$play', value='plays youtube link in voice chat', inline=False)
-    embed.add_field(name='$rank', value='checks the summoners solo queue rank', inline=False)
-    embed.add_field(name='$mastery', value='checks the summoners total mastery score for all champions', inline=False)
+    embed.add_field(name='$play (link)', value='plays youtube link in voice chat', inline=False)
+    embed.add_field(name='$rank (summoner name)', value='checks the summoners solo queue rank', inline=False)
+    embed.add_field(name='$mastery (summoner name)', value='checks the summoners total mastery score for all champions', inline=False)
     embed.add_field(name='$word', value='write a random word', inline=False)
+    embed.add_field(name='$custom4(name1, name2, name3, name4, name5, name6, name7, name8)', value='randomizes 2 teams of 4', inline=False)
+    embed.add_field(name='$custom5(name1, name2, name3, name4, name5, name6, name7, name8, name9, name10)', value='randomizes 2 teams of 5', inline=False)
 
     await author.send(embed=embed)
 
