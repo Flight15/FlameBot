@@ -9,13 +9,13 @@ import wikipedia
 
 version = input("stable, gez or gross?\n")
 if version == "stable":
-    build = "Njk2Nzk4MTQ1MzM3NzUzNzEx.Xo9vCg.I7mgdkaSudLrYGzAXj1SDFTmnUw"
+    build = "**"
     prefix = "$"
 elif version == "gez":
-    build = 'Njk2NzY4ODc3OTQxNjIwODE3.Xo9zSA.9hWVS3hS2H2psOnt_GgvB1r0MuY'
+    build = '**'
     prefix = "%"
 elif version == "gross":
-    build = 'Njk3Nzk2ODQzMDM1Mjk1ODI0.Xo9NPA.VWcIbRAIfgCGcR_LxloAEbaLamA'
+    build = '**'
     prefix = "@"
 
 Try = discord.Client()
