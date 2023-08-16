@@ -16,5 +16,5 @@ jobs:
       - name: Build Docker image
         run: |
           docker build -t flamebotImage -f Dockerfile .
-          docker tag flamebotImage:latest omri545/flamebotImage:latest  # Optional: Tag for pushing to Docker Hub or other registry
+          docker tag flamebot15:latest omri545/flamebot15:latest  # Optional: Tag for pushing to Docker Hub or other registry
 
