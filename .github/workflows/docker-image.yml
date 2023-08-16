@@ -3,7 +3,7 @@ name: Build Docker Image
 on:
   push:
     branches:
-      - master 
+      - master  # Adjust the branch name as needed
 
 jobs:
   build:
@@ -11,10 +11,9 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Build Docker image
         run: |
-          docker build -t flamebotImage -f Dockerfile .
-          docker tag flamebot15:latest omri545/flamebot15:latest  # Optional: Tag for pushing to Docker Hub or other registry
-
+          docker build -t omri545/flamebot15:latest -f Dockerfile .
+          docker push omri545/flamebot15:latest
