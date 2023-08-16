@@ -15,5 +15,5 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t omri545/flamebot15:latest -f Dockerfile .
+          docker build -t omri545/flamebot15:latest -f docker.Dockerfile .
           docker push omri545/flamebot15:latest
