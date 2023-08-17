@@ -1,5 +1,5 @@
 # Use an official Python image from Alpine
-FROM python:3.11-alpine
+FROM python:3.11-slim
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -8,7 +8,9 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Install the Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN apt-get -y update && \
+	apt -y install build-essential && \
+	pip install --no-cache-dir -r requirements.txt
 
 # Copy the rest of the repository contents into the container
 COPY . .
