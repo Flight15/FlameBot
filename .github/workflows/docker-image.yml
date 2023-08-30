@@ -4,6 +4,12 @@ on:
   push:
     branches:
       - master  # Adjust the branch name as needed
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - closed
 
 jobs:
   build:
