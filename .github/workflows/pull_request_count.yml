@@ -35,3 +35,16 @@ jobs:
       - name: Display PR Count
         run: |
           echo "Number of Open Pull Requests: ${{ steps.pr_count.outputs.pr_count }}"
+
+      - name: Update port
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.CLIENT_ID }}
+          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          operation: UPSERT
+          identifier: FlameBot
+          blueprint: Microservice
+          properties: |
+            {
+              "pr_count": $PR_COUNT
+            }
