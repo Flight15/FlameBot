@@ -1,8 +1,8 @@
 import json
 import requests
 
-CLIENT_ID = ${{ CLIENT_ID }}
-CLIENT_SECRET = ${{ CLIENT_SECRET }}
+CLIENT_ID = ${{ secrets.CLIENT_ID }}
+CLIENT_SECRET = ${{ secrets.CLIENT_SECRET }}
 
 API_URL = 'https://api.getport.io/v1'
 
