@@ -3,9 +3,9 @@ name: Build Docker Image
 on:
   workflow_dispatch:
   
-  push:
-    branches:
-      - master  # Adjust the branch name as needed
+  #push:
+    #branches:
+      #- master  # Adjust the branch name as needed
   pull_request:
     types:
       - opened
