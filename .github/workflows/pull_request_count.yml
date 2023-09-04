@@ -14,7 +14,7 @@ jobs:
     steps:
     - name: Check Open PRs
       id: prs
-      uses: octokit/rest.js@v5
+      uses: octokit/rest.js@v1
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         method: GET
