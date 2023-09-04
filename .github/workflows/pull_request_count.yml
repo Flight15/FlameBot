@@ -4,6 +4,8 @@ on:
   schedule:
     # Define the schedule in cron syntax (e.g., every day at midnight)
     - cron: '0 0 * * *'
+  #for testing
+  workflow_dispatch:
 
 jobs:
   count_open_prs:
