@@ -1,13 +1,23 @@
 resources:
-  # Extract
+  - kind: repository
+    selector:
+      query: "true" # JQ boolean query. If evaluated to false - skip syncing the object.
+    port:
+      entity:
+        mappings:
+          identifier: ".name" # The Entity identifier will be the repository name.
+          title: ".name"
+          blueprint: '"repository"'
+          properties:
+            readme: file://README.md # fetching the README.md file that is within the root folder of the repository and ingesting its contents as a markdown property
+            url: .html_url
   - kind: pull-request
     selector:
       query: "true" # JQ boolean query. If evaluated to false - skip syncing the object.
     port:
       entity:
         mappings:
-          # Transform & Load
-          identifier: ".head.repo.name + (.id|tostring)" # The Entity identifier will be the repository name + the pull request ID. After the Entity is created, the exporter will send `PATCH` requests to update this pull request within Port.
+          identifier: ".head.repo.name + (.id|tostring)" # The Entity identifier will be the repository name + the pull request ID.
           title: ".title"
           blueprint: '"pullRequest"'
           properties:
