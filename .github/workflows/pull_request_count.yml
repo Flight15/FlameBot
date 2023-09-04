@@ -43,7 +43,7 @@ jobs:
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           operation: UPSERT
           identifier: FlameBot
-          blueprint: Microservice
+          blueprint: microservice
           properties: |
             {
               "pr_count": ${{ steps.pr_count.outputs.pr_count  }}
