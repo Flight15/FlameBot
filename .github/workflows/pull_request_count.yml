@@ -46,5 +46,5 @@ jobs:
           blueprint: Microservice
           properties: |
             {
-              "pr_count": $PR_COUNT
+              "pr_count": ${{PR_COUNT}}
             }
