@@ -1,7 +1,12 @@
 name: Count Open PRs
 
 on:
+  #Scheduled Job, commented to not make it work
+  #schedule:
+    #- cron: '0 0 * * *' # This cron schedule triggers the workflow at midnight every day
+  # For manual testing purposes
   workflow_dispatch:
+  #When a new pull request is opened, port needs to be updated
   pull_request:
     types:
       - opened
@@ -19,7 +24,7 @@ jobs:
       - name: Count Open PRs
         id: pr_count
         run: |
-          # Use the GitHub API to fetch open pull requests
+          # Fetching all PR through API
           PRS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
             -H "Accept: application/vnd.github.v3+json" \
             "https://api.github.com/repos/${{ github.repository }}/pulls?state=open")
@@ -31,11 +36,7 @@ jobs:
           
           # Store the PR count as an output
           echo "::set-output name=pr_count::$PR_COUNT"
-
-      - name: Display PR Count
-        run: |
-          echo "Number of Open Pull Requests: ${{ steps.pr_count.outputs.pr_count }}"
-
+        # Update entity at port
       - name: Update port
         uses: port-labs/port-github-action@v1
         with:
