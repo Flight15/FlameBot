@@ -10,8 +10,8 @@ on:
         type: string
 jobs:
   create-repository:
-    runs-on: ubuntu-latest
     name: Create repository
+    runs-on: ubuntu-latest
     steps:
         - uses: actions/checkout@v3
         - uses: howlowck/create-repo@v1.0
@@ -22,10 +22,11 @@ jobs:
             repoVisibility: 'public'
             initialize-repo: true
   reflect-action-result: # Send action progress/result back to Port
+    name: Report to port
     runs-on: ubuntu-latest
     steps:
       - name: Create a log message
-      - uses: port-labs/port-github-action@v1
+        uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.CLIENT_ID }}
           clientSecret: ${{ secrets.CLIENT_SECRET }}
