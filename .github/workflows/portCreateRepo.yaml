@@ -1,3 +1,5 @@
+# portCreateRepo.yaml
+
 name: Port action - create repository
 on:
   workflow_dispatch:
@@ -11,18 +13,17 @@ on:
 jobs:
   create-repository:
     runs-on: ubuntu-latest
+    name: Create repository
     steps:
-      - name: Create Repository
-        uses: f1lander/create-repository-action@v1.0.2
+      - name: Create service
+        uses: octobay/create-repository-action@v1
         with:
-          # name of new repository
           name: ${{ inputs.name }}
-          # name of an organization
-          org: Flight15
-          # access token with repo scope
+          org: "Flight15" # change this to the org name in which you want to create the new repo
           access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
+          private-repo: true
+          initialize-repo: true
   reflect-action-result: # Send action progress/result back to Port
-    name: Report to port
     runs-on: ubuntu-latest
     steps:
       - name: Create a log message
@@ -33,4 +34,3 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           logMessage: New service "${{ inputs.name }}" created successfully 🚀
-
