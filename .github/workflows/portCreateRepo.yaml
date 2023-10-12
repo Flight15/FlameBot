@@ -16,13 +16,10 @@ jobs:
     name: Create repository
     steps:
       - name: Create service
-        uses: octobay/create-repository-action@v1
-        with:
-          name: ${{ inputs.name }}
-          org: "Flight15" # change this to the org name in which you want to create the new repo
-          access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          private-repo: true
-          initialize-repo: true
+        run: |
+          const endpoint = org ? `/orgs/${org}/repos` : '/user/repos'
+          curl -X POST "https://api.github.com${{ endpoint }}" -H "Authorization: token ${{ secrets.ORG_ADMIN_TOKEN}}" -d '{ "name": "your_repo_name", "private": true, "auto_init": true}'
+
   reflect-action-result: # Send action progress/result back to Port
     runs-on: ubuntu-latest
     steps:
