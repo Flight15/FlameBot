@@ -15,24 +15,22 @@ jobs:
     runs-on: ubuntu-latest
     name: Create repository
     steps:
-    - name: Set Environment Variables
-      env:
-        ORG_ADMIN_TOKEN: ${{ secrets.ORG_ADMIN_TOKEN }}
-      run: echo "ORG=${{ github.event.inputs.org }}" >> $GITHUB_ENV
-      
-    - name: Create Repository
-      run: |
-          endpoint="${{  env.ORG  }}/repos"
-          curl -X POST "https://api.github.com/${endpoint}" -H "Authorization: token $ORG_ADMIN_TOKEN" -d '{ "name": "${{ inputs.name }}", "private": true, "auto_init": true }' "private": true, "auto_init": true}'
-
+      - name: Create service
+        uses: octobay/create-repository-action@v1
+        with:
+          name: ${{ inputs.name }}
+          org: "Flight15" # change this to the org name in which you want to create the new repo
+          access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
+          private-repo: true
+          initialize-repo: true
   reflect-action-result: # Send action progress/result back to Port
     runs-on: ubuntu-latest
     steps:
       - name: Create a log message
         uses: port-labs/port-github-action@v1
         with:
-          clientId: ${{ secrets.CLIENT_ID }}
-          clientSecret: ${{ secrets.CLIENT_SECRET }}
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           logMessage: New service "${{ inputs.name }}" created successfully 🚀
