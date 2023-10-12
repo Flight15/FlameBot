@@ -1,0 +1,36 @@
+# portCreateRepo.yaml
+
+name: Port action - create repository
+on:
+  workflow_dispatch:
+    inputs:
+      name:
+        type: string
+      port_payload:
+        required: true
+        description: Port's payload, including details for who triggered the action and general context
+        type: string
+jobs:
+  create-repository:
+    runs-on: ubuntu-latest
+    name: Create repository
+    steps:
+      - name: Create service
+        uses: octobay/create-repository-action@v1
+        with:
+          name: ${{ inputs.name }}
+          org: "Flight15" # change this to the org name in which you want to create the new repo
+          access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
+          private-repo: true
+          initialize-repo: true
+  reflect-action-result: # Send action progress/result back to Port
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create a log message
+        uses: port-labs/port-github-action@v1
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: PATCH_RUN
+          runId: ${{fromJson(inputs.port_payload).context.runId}}
+          logMessage: New service "${{ inputs.name }}" created successfully 🚀
