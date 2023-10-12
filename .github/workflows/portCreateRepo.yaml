@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create Repository
-        uses: f1lander/create-repository-action@v1
+        uses: f1lander/create-repository-action@v1.0.2
         with:
           # name of new repository
           name: ${{ inputs.name }}
