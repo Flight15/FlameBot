@@ -1,5 +1,3 @@
-# portCreateRepo.yaml
-
 name: Port action - create repository
 on:
   workflow_dispatch:
