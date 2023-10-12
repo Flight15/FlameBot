@@ -15,14 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Create repository
     steps:
-      - name: Create service
-        uses: octobay/create-repository-action@v1
-        with:
-          name: ${{ inputs.name }}
-          org: "Flight15" # change this to the org name in which you want to create the new repo
-          access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          private-repo: true
-          initialize-repo: true
+        - name: Create service
+        - uses: actions/checkout@v3
+        - uses: howlowck/create-repo@v1.0
+          with:
+            repoName: ${{ inputs.name }}
+            repoOrg: "Flight15" # change this to the org name in which you want to create the new repo
+            securityToken: ${{ secrets.ORG_ADMIN_TOKEN }}
+            repoVisibility: 'public'
+            initialize-repo: true
   reflect-action-result: # Send action progress/result back to Port
     runs-on: ubuntu-latest
     steps:
@@ -34,3 +35,4 @@ jobs:
           operation: PATCH_RUN
           runId: ${{fromJson(inputs.port_payload).context.runId}}
           logMessage: New service "${{ inputs.name }}" created successfully 🚀
+
