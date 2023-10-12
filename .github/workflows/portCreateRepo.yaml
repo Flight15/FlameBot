@@ -28,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create a log message
-        uses: port-labs/port-github-action@v1
-        with:
+      - uses: port-labs/port-github-action@v1
+      - with:
           clientId: ${{ secrets.CLIENT_ID }}
           clientSecret: ${{ secrets.CLIENT_SECRET }}
           operation: PATCH_RUN
