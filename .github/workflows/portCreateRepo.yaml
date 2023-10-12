@@ -22,7 +22,7 @@ jobs:
       
     - name: Create Repository
       run: |
-          endpoint="${env.ORG}/repos"
+          endpoint="${{  env.ORG  }}/repos"
           curl -X POST "https://api.github.com/${endpoint}" -H "Authorization: token $ORG_ADMIN_TOKEN" -d '{ "name": "${{ inputs.name }}", "private": true, "auto_init": true }' "private": true, "auto_init": true}'
 
   reflect-action-result: # Send action progress/result back to Port
