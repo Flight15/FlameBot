@@ -1,3 +1,5 @@
 environments:
   - staging
   - production
+  - qa
+  - integration
