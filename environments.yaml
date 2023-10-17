@@ -1,5 +1,7 @@
 environments:
-  - staging
-  - production
-  - qa
-  - integration
+  frontend:
+    - main
+  backend:
+    - main
+  admin:
+    - demo
