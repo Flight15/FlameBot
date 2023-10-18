@@ -5,3 +5,5 @@ environments:
     - main
   admin:
     - demo
+  second:
+    - test
