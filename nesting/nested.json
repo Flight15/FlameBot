@@ -1,5 +1,7 @@
 {
     "foo": "bar",
     "fooo": "baaar",
-    "mega": "dead"
+    "nested": {
+        "mega": "dead"
+        }
 }
