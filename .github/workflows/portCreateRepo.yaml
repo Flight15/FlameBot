@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     name: Create repository
     steps:
-      - name: Create service
-        uses: octobay/create-repository-action@v1
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+      - name: Creating GitHub Organization Repository
+        uses: repo-ctrl/create-repo-action@main 
+        id: create-repo
         with:
-          name: ${{ inputs.name }}
-          org: "Flight15" # change this to the org name in which you want to create the new repo
-          access-token: ${{ secrets.ORG_ADMIN_TOKEN }}
-          private-repo: true
-          initialize-repo: true
+          repo-name: '${{ github.event.inputs.repo-name }}'
+          org-admin-token: '${{ secrets.ORG_ADMIN_TOKEN }}'
   reflect-action-result: # Send action progress/result back to Port
     runs-on: ubuntu-latest
     steps:
