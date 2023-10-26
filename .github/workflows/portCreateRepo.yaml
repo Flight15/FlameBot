@@ -15,14 +15,15 @@ jobs:
     runs-on: ubuntu-latest
     name: Create repository
     steps:
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-      - name: Creating GitHub Organization Repository
-        uses: repo-ctrl/create-repo-action@main 
-        id: create-repo
+      - name: Create Repository
+        # You may pin to the exact commit or the version.
+        # uses: f1lander/create-repository-action@790b25d255717b5a81416a8390f3344396181805
+        uses: f1lander/create-repository-action@v1.0.2
         with:
-          repo-name: '${{ github.event.inputs.repo-name }}'
-          org-admin-token: '${{ secrets.ORG_ADMIN_TOKEN }}'
+          # name of new repository
+          name: '${{ github.event.inputs.repo-name }}'
+          # access token with repo scope
+          access-token: '${{ secrets.ORG_ADMIN_TOKEN }}'
   reflect-action-result: # Send action progress/result back to Port
     runs-on: ubuntu-latest
     steps:
