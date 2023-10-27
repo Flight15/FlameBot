@@ -1,24 +1,25 @@
-# portCreateRepo.yaml
-
-name: Port action - create repository
 on:
   workflow_dispatch:
     inputs:
-      name:
-        type: string
       port_payload:
         required: true
-        description: Port's payload, including details for who triggered the action and general context
+        description: "Port's payload, including details for who triggered the action and general context (blueprint, run id, etc...)"
         type: string
+    secrets:
+      ORG_ADMIN_TOKEN:
+        required: true
+      PORT_CLIENT_ID:
+        required: true
+      PORT_CLIENT_SECRET:
+        required: true
 jobs:
   scaffold:
     runs-on: ubuntu-latest
-    name: Create repository
     steps:
       - uses: port-labs/cookiecutter-gha@v1
         with:
-          portClientId: ${{ secrets.PORT_CLIENT_ID }}
-          portClientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          portClientId: ${{ secrets.CLIENT_ID }}
+          portClientSecret: ${{ secrets.CLIENT_SECRET }}
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
