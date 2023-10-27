@@ -11,7 +11,7 @@ on:
         description: Port's payload, including details for who triggered the action and general context
         type: string
 jobs:
-  create-repository:
+  scaffold:
     runs-on: ubuntu-latest
     name: Create repository
     steps:
@@ -20,16 +20,9 @@ jobs:
           portClientId: ${{ secrets.PORT_CLIENT_ID }}
           portClientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
+          portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
+          portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties) }}
+          cookiecutterTemplate: https://github.com/lacion/cookiecutter-golang
           blueprintIdentifier: "microservice"
-  reflect-action-result: # Send action progress/result back to Port
-    runs-on: ubuntu-latest
-    steps:
-      - name: Create a log message
-        uses: port-labs/port-github-action@v1
-        with:
-          clientId: ${{ secrets.CLIENT_ID }}
-          clientSecret: ${{ secrets.CLIENT_SECRET }}
-          operation: PATCH_RUN
-          runId: ${{fromJson(inputs.port_payload).context.runId}}
-          logMessage: New service "${{ inputs.name }}" created successfully 🚀
+          organizationName: Flight15
