@@ -41,7 +41,7 @@ jobs:
       - name: Calculate length of entities array
         id: entity-count
         run: echo "::set-output name=entity-counter::$(echo '${{ steps.search.outputs.entities }}' | jq '. | length')"
-        
+
       - name: Debug
         run: echo ${{ steps.entity-count.outputs.entity-counter }}
 
@@ -50,7 +50,7 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: UPSERT
+          operation: PATCH
           identifier: ${{ fromJson(inputs.port_payload).context.entity }}
           blueprint: repository
           properties: |
