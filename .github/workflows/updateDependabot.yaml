@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       port_payload:
-        description: 'The payload from port'
+        description: "The payload from port"
         required: false
         type: string
 
@@ -83,10 +83,34 @@ jobs:
                   "property": "severity",
                   "operator": "=",
                   "value": "high"
-                }
+                },
               ]
             }
     
+      - name: Search for dependabot alerts Critical
+        uses: port-labs/port-github-action@v1
+        id: search-critical
+        with:
+          clientId: ${{ secrets.PORT_CLIENT_ID }}
+          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
+          operation: SEARCH
+          blueprint: dependabotAlert
+          query: |
+            {
+              "combinator": "and",
+              "rules": [
+                {
+                  "blueprint": "repository",
+                  "operator": "relatedTo",
+                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
+                },
+                {
+                  "property": "severity",
+                  "operator": "=",
+                  "value": "critical"
+                }
+              ]
+            }
 
       - name: Calculate length of entities array low
         id: entity-count-low
@@ -95,10 +119,14 @@ jobs:
       - name: Calculate length of entities array med
         id: entity-count-med
         run: echo "::set-output name=entity-counter-med::$(echo '${{ steps.search-med.outputs.entities }}' | jq '. | length')"
-      
+
       - name: Calculate length of entities array high
         id: entity-count-high
         run: echo "::set-output name=entity-counter-high::$(echo '${{ steps.search-high.outputs.entities }}' | jq '. | length')"
+
+      - name: Calculate length of entities array critical
+        id: entity-count-critical
+        run: echo "::set-output name=entity-counter-critical::$(echo '${{ steps.search-critical.outputs.entities }}' | jq '. | length')"
 
       - name: Update port
         uses: port-labs/port-github-action@v1
@@ -112,5 +140,6 @@ jobs:
             {
               "lowdependabot": ${{ steps.entity-count-low.outputs.entity-counter-low }},
               "meddependabot": ${{ steps.entity-count-med.outputs.entity-counter-med }},
-              "highdependabot": ${{ steps.entity-count-high.outputs.entity-counter-high }}
+              "highdependabot": ${{ steps.entity-count-high.outputs.entity-counter-high }},
+              "criticaldependabot": ${{ steps.entity-count-critical.outputs.entity-counter-critical }}
             }
