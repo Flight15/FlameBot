@@ -110,7 +110,7 @@ jobs:
           blueprint: repository
           properties: |
             {
-              "lowdependabot": "${{ steps.entity-count.outputs.entity-counter-low }}",
-              "meddependabot": "${{ steps.entity-count.outputs.entity-counter-med }}",
-              "highdependabot": "${{ steps.entity-count.outputs.entity-counter-high }}"
+              "lowdependabot": "${{ steps.entity-count-low.outputs.entity-counter-low }}",
+              "meddependabot": "${{ steps.entity-count-med.outputs.entity-counter-med }}",
+              "highdependabot": "${{ steps.entity-count-high.outputs.entity-counter-high }}"
             }
