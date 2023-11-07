@@ -16,7 +16,6 @@ on:
       port_payload:
         description: 'The payload from port'
         required: false
-        default: '{"payload": {"entity": "github.com/Port-Labs/port-github-action"}}'
 
 jobs:
   calculate_Dependabots:
@@ -31,14 +30,14 @@ jobs:
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: SEARCH
           blueprint: dependabotAlert
-          query: |- 
+          query: | 
             {
               "combinator": "and",
               "rules": [
                 {
                   "blueprint": "repository",
                   "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).payload.entity }}"
+                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
                 },
                 {
                   "property": "severity",
@@ -62,7 +61,7 @@ jobs:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: UPSERT
-          identifier: ${{ fromJson(inputs.port_payload).payload.entity }}
+          identifier: ${{ fromJson(inputs.port_payload).context.entity }}
           blueprint: repository
           properties: |
             {
