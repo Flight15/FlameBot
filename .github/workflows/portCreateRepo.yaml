@@ -18,8 +18,8 @@ jobs:
     steps:
       - uses: port-labs/cookiecutter-gha@v1
         with:
-          portClientId: ${{ secrets.CLIENT_ID }}
-          portClientSecret: ${{ secrets.CLIENT_SECRET }}
+          portClientId: ${{ secrets.PORT_CLIENT_ID }}
+          portClientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.cookiecutter_app_name }}
