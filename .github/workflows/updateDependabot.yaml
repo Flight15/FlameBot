@@ -50,7 +50,7 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: PATCH
+          operation: UPSERT
           identifier: ${{ fromJson(inputs.port_payload).context.entity }}
           blueprint: repository
           properties: |
