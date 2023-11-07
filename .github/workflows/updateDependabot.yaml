@@ -37,12 +37,13 @@ jobs:
                 }
               ]
             }
-      - name: Debug search results
-        run: echo "'${{ steps.search.outputs.entities }}'"
 
       - name: Calculate length of entities array
         id: entity-count
         run: echo "::set-output name=entity-counter::$(echo '${{ steps.search.outputs.entities }}' | jq '. | length')"
+        
+      - name: Debug
+        run: echo ${{ steps.entity-count.outputs.entity-counter }}
 
       - name: Update port
         uses: port-labs/port-github-action@v1
