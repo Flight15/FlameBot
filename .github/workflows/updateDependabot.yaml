@@ -1,17 +1,7 @@
 name: update Dependabot
 
 on:
-  #Scheduled Job, commented to not make it work
-  #schedule:
-    #- cron: '0 0 * * *' # This cron schedule triggers the workflow at midnight every day
-  # For manual testing purposes
   workflow_dispatch:
-  #When a new pull request is opened, port needs to be updated
-  # pull_request:
-   # types:
-    #  - opened
-    #  - synchronize
-    #  - reopened
     inputs:
       port_payload:
         description: 'The payload from port'
@@ -30,14 +20,14 @@ jobs:
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: SEARCH
           blueprint: dependabotAlert
-          query: |  
+          query: |
             {
               "combinator": "and",
               "rules": [
                 {
                   "blueprint": "repository",
                   "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
+                  "value": "${{ github.event.inputs.port_payload.context.entity }}"
                 },
                 {
                   "property": "severity",
@@ -52,16 +42,18 @@ jobs:
       - name: Calculate length of entities array
         id: entity-count
         run: echo "::set-output name=entity-counter::$(echo '${{ steps.search.outputs.entities }}' | jq '. | length')"
-        
-  
-        # Update entity at port
+
+      - name: Parse JSON input
+        id: parse
+        run: echo "::set-output name=parsed::$(echo '${{ github.event.inputs.port_payload }}' | jq -r '.context.entity')"
+
       - name: Update port
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: UPSERT
-          identifier: ${{ fromJson(inputs.port_payload).context.entity }}
+          identifier: ${{ steps.parse.outputs.parsed }}
           blueprint: repository
           properties: |
             {
