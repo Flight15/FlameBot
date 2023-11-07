@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check Out Repository
+      - name: Search for Dependabot alerts
         uses: port-labs/port-github-action@v1
         id: search
         with:
@@ -47,9 +47,13 @@ jobs:
                 }
               ]
             }
+      - name: Debug search results
+        run: echo "'${{ steps.search.outputs.entities }}' | jq '. | length'"
+
       - name: Calculate length of entities array
-        run: echo "::set-output name=entity-counter::$(echo '${{ steps.search.outputs.entities }}' | jq '. | length')"
         id: entity-count
+        run: echo "::set-output name=entity-counter::$(echo '${{ steps.search.outputs.entities }}' | jq '. | length')"
+        
   
         # Update entity at port
       - name: Update port
