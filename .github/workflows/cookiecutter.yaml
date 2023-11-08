@@ -30,10 +30,10 @@ jobs:
         with:
           portClientId: ${{ secrets.PORT_CLIENT_ID }}
           portClientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          token: ${{ secrets.ORG_TOKEN }}
+          token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
           portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties.options) }}
           cookiecutterTemplate: ${{ fromJson(inputs.port_payload).payload.properties.template }}
-          blueprintIdentifier: "service"
-          organizationName: port-live-webinar
+          blueprintIdentifier: "repository"
+          organizationName: Flight15
