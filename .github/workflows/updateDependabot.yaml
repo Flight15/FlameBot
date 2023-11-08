@@ -30,8 +30,8 @@ jobs:
                 {
                   "blueprint": "$identifier",
                   "operator": "isNotEmpty"
-                },
-              ]
+                }
+                ]
             }
     
       - name: calculate
