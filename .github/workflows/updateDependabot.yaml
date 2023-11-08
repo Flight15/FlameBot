@@ -20,8 +20,8 @@ jobs:
         id: calculate
         run: |
           access_token=$(curl --location --request POST "https://api.getport.io/v1/auth/access_token" --header "Content-Type: application/json" --data-raw "{
-              "clientId": "${{ secrets.PORT_CLIENT_ID }}",
-              "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}",
+              \"clientId\": \"${{ secrets.PORT_CLIENT_ID }}\",
+              "clientSecret": \"${{ secrets.PORT_CLIENT_SECRET }}\",
               }" | jq -r '.accessToken')
               echo "PRINTING ACCESS TOKEN"
               echo $access_token
@@ -34,9 +34,9 @@ jobs:
               -d "{"combinator": "and",
                   "rules":[
                   {
-                      "property": "$blueprint",
-                      "operator": "=",
-                      "value": "repository"
+                      \"property\": \"$blueprint\",
+                      \"operator\": \"=\",
+                      \"value\": \"repository\"
                   }
                   ]
                   }" | jq -r '.entities[].identifier')
@@ -70,11 +70,11 @@ jobs:
                   count=$(echo $res | jq '.entities | length')
                   echo "PRINTING COUNT"
                   echo $count
-                  curl -X 'PATCH' \
+                  curl -X "PATCH" \
                   "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
-                  -H 'accept: */*' \
+                  -H "accept: */*" \
                   -H "Authorization: Bearer $access_token" \
-                  -H 'Content-Type: application/json' \
+                  -H "Content-Type: application/json" \
                   -d "{
                   \"properties\": {
                       \"${{ matrix.sevirity }}_count\": $count
