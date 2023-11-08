@@ -32,6 +32,7 @@ jobs:
       - name: calculate
         id: calculate
         run: |
+          echo ${{ steps.get-repos.outputs.entities }}
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
             -H 'Content-Type: application/json' \
             --data-raw '{
