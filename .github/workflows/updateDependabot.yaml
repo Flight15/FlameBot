@@ -8,138 +8,60 @@ on:
         required: false
         type: string
 
-jobs:
-  calculate_Dependabots_low:
+jobs:  
+  get_repositories:
+    strategy:
+      matrix:
+        sevirity: ['low', 'medium', 'high', 'critical']
     runs-on: ubuntu-latest
-
     steps:
-      - name: Search for Dependabot alerts low
+      - name: Get all repositories
         uses: port-labs/port-github-action@v1
-        id: search-low
+        id: get-repos
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: SEARCH
-          blueprint: dependabotAlert
+          blueprint: repository
           query: |
             {
               "combinator": "and",
-              "rules": [
-                {
-                  "blueprint": "repository",
-                  "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
-                },
-                {
-                  "property": "severity",
-                  "operator": "=",
-                  "value": "low"
-                }
-              ]
-            }
-      - name: Search for Dependabot alerts med
-        uses: port-labs/port-github-action@v1
-        id: search-med
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: SEARCH
-          blueprint: dependabotAlert
-          query: |
-            {
-              "combinator": "and",
-              "rules": [
-                {
-                  "blueprint": "repository",
-                  "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
-                },
-                {
-                  "property": "severity",
-                  "operator": "=",
-                  "value": "medium"
-                }
-              ]
-            }
-
-      - name: Search for Dependabot alerts high
-        uses: port-labs/port-github-action@v1
-        id: search-high
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: SEARCH
-          blueprint: dependabotAlert
-          query: |
-            {
-              "combinator": "and",
-              "rules": [
-                {
-                  "blueprint": "repository",
-                  "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
-                },
-                {
-                  "property": "severity",
-                  "operator": "=",
-                  "value": "high"
-                },
-              ]
+              "rules":[]
             }
     
-      - name: Search for dependabot alerts Critical
-        uses: port-labs/port-github-action@v1
-        id: search-critical
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: SEARCH
-          blueprint: dependabotAlert
-          query: |
-            {
+      - name: calculate
+        id: calculate
+        run: |
+          for repo in ${{ steps.get-repos.outputs.entities }}; do
+            res=$(curl -X 'POST' \
+              'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
+              -H 'accept: */*' \
+              -H 'Content-Type: application/json' \
+              -d '{
               "combinator": "and",
-              "rules": [
-                {
+              "rules":[
+              {
                   "blueprint": "repository",
                   "operator": "relatedTo",
-                  "value": "${{ fromJson(inputs.port_payload).context.entity }}"
+                  "value": "${repo}"
                 },
                 {
                   "property": "severity",
                   "operator": "=",
-                  "value": "critical"
+                  "value": "${{ matrix.sevirity }}"
                 }
-              ]
-            }
-
-      - name: Calculate length of entities array low
-        id: entity-count-low
-        run: echo "::set-output name=entity-counter-low::$(echo '${{ steps.search-low.outputs.entities }}' | jq '. | length')"
-
-      - name: Calculate length of entities array med
-        id: entity-count-med
-        run: echo "::set-output name=entity-counter-med::$(echo '${{ steps.search-med.outputs.entities }}' | jq '. | length')"
-
-      - name: Calculate length of entities array high
-        id: entity-count-high
-        run: echo "::set-output name=entity-counter-high::$(echo '${{ steps.search-high.outputs.entities }}' | jq '. | length')"
-
-      - name: Calculate length of entities array critical
-        id: entity-count-critical
-        run: echo "::set-output name=entity-counter-critical::$(echo '${{ steps.search-critical.outputs.entities }}' | jq '. | length')"
-
-      - name: Update port
-        uses: port-labs/port-github-action@v1
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: UPSERT
-          identifier: ${{ fromJson(inputs.port_payload).context.entity }}
-          blueprint: repository
-          properties: |
-            {
-              "lowcount": ${{ steps.entity-count-low.outputs.entity-counter-low }},
-              "medcount": ${{ steps.entity-count-med.outputs.entity-counter-med }},
-              "highcount": ${{ steps.entity-count-high.outputs.entity-counter-high }},
-              "critcount": ${{ steps.entity-count-critical.outputs.entity-counter-critical }}
-            }
+               ]
+               }')
+               count=$($res | jq '.entities | length')
+               curl -X 'PATCH' \
+                'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
+                -H 'accept: */*' \
+                -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6Im9yZ19aMnlrelRWMzA4dHpoZnZvIiwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cG9ydC5pbyIsImlzTWFjaGluZSI6dHJ1ZSwic3ViIjoiMmdBN1l0NHRzZkg5UndSbmJtcDNFbHpBck1qTlBtSnIiLCJqdGkiOiJlZTk4MWM3MS0yMDE1LTQ0NTQtYTFiNi0xYWU4Zjc4ZjkwMDUiLCJpYXQiOjE2OTk0MzY4MjIsImV4cCI6MTY5OTQ0NzYyMn0.0oAdLMRsoT_pqi9rTlpoBWP_2s26whij2e7MGsXL3-g' \
+                -H 'Content-Type: application/json' \
+                -d '{
+                "identifier": "$repo",
+                "properties": {
+                  "${{ matrix.sevirity }}_count": "$count"
+                }
+              }'
+          done
