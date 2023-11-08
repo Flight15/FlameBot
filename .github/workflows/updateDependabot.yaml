@@ -33,7 +33,7 @@ jobs:
         id: calculate
         run: |
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
-          --header 'Content-Type: application/json' \
+          --H 'Content-Type: application/json' \
           --data-raw '{
               "clientId": "CLIENT_ID",
               "clientSecret": "CLIENT_SECRET"
