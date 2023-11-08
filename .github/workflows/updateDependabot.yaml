@@ -21,8 +21,8 @@ jobs:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: GET
-          blueprint: repository
-          
+          identifier: repository
+
   calculations_job: 
     strategy:
       fail-fast: false
@@ -42,6 +42,7 @@ jobs:
             echo "starting to iterate"
             echo "PRINTING ENTITIES ARRAY"
             echo ${{ steps.getRepos.outputs.entities }}
+            echo "INITIALIZING FOR LOOP"
           for repo in $(echo "${{ steps.getRepos.outputs.entities }}"  | jq -r '[.[].identifier]'); do
             echo $repo
             res=$(curl -X 'POST' \
