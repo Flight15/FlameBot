@@ -56,7 +56,7 @@ jobs:
                curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
-                -H 'Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJvcmdJZCI6Im9yZ19aMnlrelRWMzA4dHpoZnZvIiwiaXNzIjoiaHR0cHM6Ly9hcGkuZ2V0cG9ydC5pbyIsImlzTWFjaGluZSI6dHJ1ZSwic3ViIjoiMmdBN1l0NHRzZkg5UndSbmJtcDNFbHpBck1qTlBtSnIiLCJqdGkiOiJlZTk4MWM3MS0yMDE1LTQ0NTQtYTFiNi0xYWU4Zjc4ZjkwMDUiLCJpYXQiOjE2OTk0MzY4MjIsImV4cCI6MTY5OTQ0NzYyMn0.0oAdLMRsoT_pqi9rTlpoBWP_2s26whij2e7MGsXL3-g' \
+                -H 'Authorization: Bearer '' \
                 -H 'Content-Type: application/json' \
                 -d '{
                 "identifier": "$repo",
