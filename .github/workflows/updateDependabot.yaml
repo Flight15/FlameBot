@@ -50,6 +50,8 @@ jobs:
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
             echo "starting to iterate"
+            echo "PRINTING ENTITIES ARRAY"
+            echo ${{ steps.get-repos.outputs.entities }}
           for repo in $(echo "{${{ steps.get-repos.outputs.entities }}}" | jq -r '[.[].identifier ]'); do
             echo $(repo)
             res=$(curl -X 'POST' \
