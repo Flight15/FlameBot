@@ -32,11 +32,19 @@ jobs:
       - name: calculate
         id: calculate
         run: |
+          access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "clientId": "CLIENT_ID",
+              "clientSecret": "CLIENT_SECRET"
+          }' | jq '.accessToken' | sed 's/"//g')
+
           for repo in ${{ steps.get-repos.outputs.entities }}; do
             res=$(curl -X 'POST' \
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
               -H 'accept: */*' \
               -H 'Content-Type: application/json' \
+              -H 'Authorization: $(access_token) ' \
               -d '{
               "combinator": "and",
               "rules":[
@@ -56,7 +64,7 @@ jobs:
                curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
-                -H 'Authorization: Bearer '' \
+                -H 'Authorization: $(access_token)' \
                 -H 'Content-Type: application/json' \
                 -d '{
                 "identifier": "$repo",
