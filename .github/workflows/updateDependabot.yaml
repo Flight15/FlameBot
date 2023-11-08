@@ -10,10 +10,6 @@ on:
 
 jobs:  
   get_repositories:
-    strategy:
-      fail-fast: false
-      matrix:
-        sevirity: ['low', 'medium', 'high', 'critical']
     runs-on: ubuntu-latest
     steps:
       - name: Get all repositories
@@ -39,7 +35,13 @@ jobs:
                 }
                 ]
             }
-    
+  calculations_job: 
+    strategy:
+      fail-fast: false
+      matrix:
+        sevirity: ['low', 'medium', 'high', 'critical']
+    runs-on: ubuntu-latest
+    steps:
       - name: calculate
         id: calculate
         run: |
@@ -72,15 +74,15 @@ jobs:
                   "operator": "=",
                   "value": "${{ matrix.sevirity }}"
                 }
-               ]
-               }'
-               )
-               echo "done searching for $(repo)"
-               count=$(echo $res | jq '.entities | length')
-               echo "PLACEHOLDER FOR COUNT"
-               echo ${{ matrix.sevirity }}
-               echo $count
-               curl -X 'PATCH' \
+              ]
+              }'
+              )
+              echo "done searching for $(repo)"
+              count=$(echo $res | jq '.entities | length')
+              echo "PLACEHOLDER FOR COUNT"
+              echo ${{ matrix.sevirity }}
+              echo $count
+              curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
                 -H 'Authorization: Bearer ${access_token}' \
