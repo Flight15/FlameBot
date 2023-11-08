@@ -24,12 +24,12 @@ jobs:
           "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
            }' | jq '.accessToken' | sed 's/"//g')
 
-            echo $access_token
+          echo $access_token
 
           repos=$(curl -X 'POST' \
             'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
             -H 'accept: */*' \
-            -H 'Authorization: Bearer ${access_token}' \
+            -H "Authorization: Bearer $access_token" \
             -H 'Content-Type: application/json' \
             -d '{"combinator": "and",
               "rules":[
@@ -49,7 +49,7 @@ jobs:
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
               -H 'accept: */*' \
               -H 'Content-Type: application/json' \
-              -H 'Authorization: Bearer ${access_token}' \
+              -H "Authorization: Bearer $access_token" \
               -d '{
               "combinator": "and",
               "rules":[
@@ -74,7 +74,7 @@ jobs:
               curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
-                -H 'Authorization: Bearer ${access_token}' \
+                -H "Authorization: Bearer $access_token" \
                 -H 'Content-Type: application/json' \
                 -d '{
                 "identifier": "$repo",
