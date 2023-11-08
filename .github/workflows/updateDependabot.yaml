@@ -50,7 +50,7 @@ jobs:
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
             echo "starting to iterate"
-          for repo in $(echo "{${{ steps.get-repos.outputs.entities }}}" | jq -r '[.[].identifier ]; do
+          for repo in $(echo "{${{ steps.get-repos.outputs.entities }}}" | jq -r '[.[].identifier ]'; do
             echo $(repo)
             res=$(curl -X 'POST' \
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
