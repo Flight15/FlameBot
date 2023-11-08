@@ -61,7 +61,7 @@ jobs:
                ]
                }'
                )
-               count=$($res | jq '.entities | length')
+               count=$(echo $res | jq '.entities | length')
                curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
