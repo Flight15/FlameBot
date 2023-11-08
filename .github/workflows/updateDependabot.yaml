@@ -20,64 +20,66 @@ jobs:
         id: calculate
         run: |
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' --header 'Content-Type: application/json' --data-raw '{
-          "clientId": "${{ secrets.PORT_CLIENT_ID }}",
-          "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
-           }' | jq '.accessToken' | sed 's/"//g')
+              "clientId": "${{ secrets.PORT_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}",
+              }' | jq -r '.accessToken')
+              echo "PRINTING ACCESS TOKEN"
+              echo $access_token
 
-          echo $access_token
-
-          repos=$(curl -X 'POST' \
-            'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
-            -H 'accept: */*' \
-            -H "Authorization: Bearer $access_token" \
-            -H 'Content-Type: application/json' \
-            -d '{"combinator": "and",
-              "rules":[
-              {
-                  "property": "$blueprint",
-                  "operator": "=",
-                  "value": "repository"
-                }
-                ]
-              }' | jq -r '.entities[].identifier | split("\n")')
-            echo "INITIALIZING FOR LOOP"
-          for repo in $(echo "${repos}"); do
-            echo $repo
-            res=$(curl -X 'POST' \
-              'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
-              -H 'accept: */*' \
-              -H 'Content-Type: application/json' \
+              repos=$(curl -X "POST" \
+              "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
+              -H "accept: */*" \
               -H "Authorization: Bearer $access_token" \
-              -d '{
-              "combinator": "and",
-              "rules":[
-              {
-                  "blueprint": "repository",
-                  "operator": "relatedTo",
-                  "value": "${repo}"
-                },
-                {
-                  "property": "severity",
-                  "operator": "=",
-                  "value": "${{ matrix.sevirity }}"
-                }
-              ]
-              }'
-              )
-              echo "done searching for $(repo)"
-              count=$(echo $res | jq '.entities | length')
-              echo "PLACEHOLDER FOR COUNT"
-              echo ${{ matrix.sevirity }}
-              echo $"count"
-              curl -X 'PATCH' \
-                'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
-                -H 'accept: */*' \
-                -H "Authorization: Bearer $access_token" \
-                -H 'Content-Type: application/json' \
-                -d '{
-                "identifier": "$repo",
-                "properties": {
-                  "${{ matrix.sevirity }}_count": "$count"
-                }
-              }'
-          done
+              -H "Content-Type: application/json" \
+              -d "{"combinator": "and",
+                  "rules":[
+                  {
+                      "property": "$blueprint",
+                      "operator": "=",
+                      "value": "repository"
+                  }
+                  ]
+                  }" | jq -r '.entities[].identifier')
+                  echo $repos
+              echo "INITIALIZING FOR LOOP"
+              for repo in $repos ; do
+              res=$(curl -X "POST" \
+                  "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
+                  -H "accept: */*" \
+                  -H "Content-Type: application/json" \
+                  -H "Authorization: Bearer $access_token" \
+                  -d "{
+                  \"combinator\": \"and\",
+                  \"rules\":[
+                  {
+                      \"blueprint\": \"repository\",
+                      \"operator\": \"relatedTo\",
+                      \"value\": \"$repo\"
+                  },
+                  {
+                      \"property\": \"severity\",
+                      \"operator\": \"=\",
+                      \"value\": \"${{ matrix.sevirity }}\"
+                  }
+                  ]
+                  }"
+                  )
+                  echo "done searching"
+                  echo $repo
+                  echo "CALCULATING COUNT"
+                  count=$(echo $res | jq '.entities | length')
+                  echo "PRINTING COUNT"
+                  echo $count
+                  curl -X 'PATCH' \
+                  "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
+                  -H 'accept: */*' \
+                  -H "Authorization: Bearer $access_token" \
+                  -H 'Content-Type: application/json' \
+                  -d "{
+                  \"properties\": {
+                      \"${{ matrix.sevirity }}_count\": $count
+                  }
+                  }"
+                  echo "STARTING NEXT REPO"
+              done
+              echo "DONE"
