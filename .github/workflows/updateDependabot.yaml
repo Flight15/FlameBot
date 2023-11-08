@@ -21,6 +21,7 @@ jobs:
         run: |
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
             -H 'Content-Type: application/json' \
+            -H 'accept: application/json' \
             --data-raw '{
                 "clientId": "${{ secrets.PORT_CLIENT_ID }}",
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
