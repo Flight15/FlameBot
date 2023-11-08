@@ -53,7 +53,7 @@ jobs:
             echo "PRINTING ENTITIES ARRAY"
             echo ${{ steps.get-repos.outputs.entities }}
           for repo in $(echo "{${{ steps.get-repos.outputs.entities }}}"  | jq -r '.[].identifier'); do
-            echo $(repo)
+            echo $repo
             res=$(curl -X 'POST' \
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
               -H 'accept: */*' \
@@ -78,7 +78,8 @@ jobs:
                echo "done searching for $(repo)"
                count=$(echo $res | jq '.entities | length')
                echo "PLACEHOLDER FOR COUNT"
-               echo $(count)
+               echo ${{ matrix.sevirity }}
+               echo $count
                curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
