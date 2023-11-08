@@ -81,7 +81,7 @@ jobs:
               count=$(echo $res | jq '.entities | length')
               echo "PLACEHOLDER FOR COUNT"
               echo ${{ matrix.sevirity }}
-              echo $count
+              echo $"count"
               curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
