@@ -26,7 +26,12 @@ jobs:
           query: |
             {
               "combinator": "and",
-              "rules":[]
+              "rules":[
+                {
+                  "blueprint": "$identifier",
+                  "operator": "isNotEmpty"
+                },
+              }]
             }
     
       - name: calculate
