@@ -8,38 +8,13 @@ on:
         required: false
         type: string
 
-jobs:  
-  get_repositories:
-    runs-on: ubuntu-latest
-    outputs:
-      entities: ${{ steps.getRepos.outputs.entities }}
-    steps:
-      - name: Get all repositories
-        uses: port-labs/port-github-action@v1
-        id: getRepos
-        with:
-          clientId: ${{ secrets.PORT_CLIENT_ID }}
-          clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: SEARCH
-          blueprint: repository
-          query: |
-            {
-            "combinator": "and",
-            "rules":[
-            {
-            "property": "$blueprint",
-            "operator": "=",
-            "value": "repository"
-            }]}
-
-
+jobs: 
   calculations_job: 
     strategy:
       fail-fast: false
       matrix:
         sevirity: ['low', 'medium', 'high', 'critical']
     runs-on: ubuntu-latest
-    needs: get_repositories
     steps:
       - name: calculate
         id: calculate
@@ -50,11 +25,24 @@ jobs:
                 "clientId": "${{ secrets.PORT_CLIENT_ID }}",
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
-            echo "starting to iterate"
-            echo "PRINTING ENTITIES ARRAY"
-            echo ${{ needs.get_repositories.outputs.entities }}
+
+            repos= $curl -X 'POST' \
+            'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
+            -H 'accept: */*' \
+            -H 'Authorization: Bearer ${access_token}' \
+            -H 'Content-Type: application/json' \
+            -d '{"combinator": "and",
+              "rules":[
+              {
+                  "property": "$blueprint",
+                  "operator": "=",
+                  "value": "repository"
+                }
+                ]
+              }'
             echo "INITIALIZING FOR LOOP"
-          for repo in $(echo "${{ needs.get_repositories.outputs.entities }}"  | jq -r '[.[].identifier]'); do
+            echo $repos
+          for repo in $(echo "${repos}"  | jq -r '[.[].identifier]'); do
             echo $repo
             res=$(curl -X 'POST' \
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
