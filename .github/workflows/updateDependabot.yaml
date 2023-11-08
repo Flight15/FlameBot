@@ -26,21 +26,21 @@ jobs:
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
 
-            repos= $(curl -X 'POST' \
+          repos=$(curl -X 'POST' \
             'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
-              -H 'accept: */*' \
-              -H 'Authorization: Bearer ${access_token}' \
-              -H 'Content-Type: application/json' \
-              -d '{"combinator": "and",
-                "rules":[
-                {
-                    "property": "$blueprint",
-                    "operator": "=",
-                    "value": "repository"
-                  }
-                  ]
-                }'
-                )
+            -H 'accept: */*' \
+            -H 'Authorization: Bearer ${access_token}' \
+            -H 'Content-Type: application/json' \
+            -d '{"combinator": "and",
+              "rules":[
+              {
+                  "property": "$blueprint",
+                  "operator": "=",
+                  "value": "repository"
+                }
+                ]
+              }'
+              )
             echo "INITIALIZING FOR LOOP"
             echo $repos
           for repo in $(echo "${repos}"  | jq -r '[.[].identifier]'); do
