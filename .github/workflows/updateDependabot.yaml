@@ -20,8 +20,18 @@ jobs:
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
-          operation: GET
+          operation: SEARCH
           blueprint: repository
+          query: |
+            {
+            "combinator": "and",
+            "rules":[
+            {
+            "property": "$blueprint",
+            "operator": "=",
+            "value": "repository"
+            }]}
+
 
   calculations_job: 
     strategy:
