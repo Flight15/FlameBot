@@ -35,5 +35,5 @@ jobs:
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
           portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties.options) }}
           cookiecutterTemplate: ${{ fromJson(inputs.port_payload).payload.properties.template }}
-          blueprintIdentifier: "microservice"
+          blueprintIdentifier: "service"
           organizationName: port-live-webinar
