@@ -36,7 +36,7 @@ jobs:
             -H 'Content-Type: application/json' \
             --data-raw '{
                 "clientId": "${{ secrets.PORT_CLIENT_ID }}",
-                "clientSecret": ${{ secrets.PORT_CLIENT_SECRET }}
+                "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
 
           for repo in ${{ steps.get-repos.outputs.entities }}; do
