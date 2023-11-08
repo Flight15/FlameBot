@@ -37,14 +37,13 @@ jobs:
       - name: calculate
         id: calculate
         run: |
-          echo ${{ steps.get-repos.outputs.entities }}
           access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
             -H 'Content-Type: application/json' \
             --data-raw '{
                 "clientId": "${{ secrets.PORT_CLIENT_ID }}",
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
             }' | jq '.accessToken' | sed 's/"//g')
-
+            echo "starting to iterate"
           for repo in ${{ steps.get-repos.outputs.entities }}; do
             res=$(curl -X 'POST' \
               'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
@@ -70,7 +69,6 @@ jobs:
                echo "done searching for $repo"
                count=$(echo $res | jq '.entities | length')
                echo $count
-               echo $(count)
                curl -X 'PATCH' \
                 'https://api.getport.io/v1/blueprints/repository/entities/%24repo?create_missing_related_entities=false' \
                 -H 'accept: */*' \
