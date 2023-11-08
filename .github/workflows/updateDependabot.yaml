@@ -21,7 +21,7 @@ jobs:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
           clientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           operation: GET
-          identifier: repository
+          blueprint: repository
 
   calculations_job: 
     strategy:
