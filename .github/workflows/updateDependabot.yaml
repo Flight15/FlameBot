@@ -28,7 +28,7 @@ jobs:
               "combinator": "and",
               "rules":[
                 {
-                  "blueprint": "$identifier",
+                  "property": "$identifier",
                   "operator": "isNotEmpty"
                 }
                 ]
