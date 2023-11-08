@@ -25,7 +25,7 @@ jobs:
             --data-raw '{
                 "clientId": "${{ secrets.PORT_CLIENT_ID }}",
                 "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
-            }' 
+            }' | jq -r '.accessToken'
 
           repos=$(curl -X 'POST' \
             'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
