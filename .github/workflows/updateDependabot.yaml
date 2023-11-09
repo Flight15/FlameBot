@@ -13,7 +13,7 @@ jobs:
     #strategy:
      # fail-fast: false
      # matrix:
-       # sevirity: ['low', 'medium', 'high', 'critical']
+       # sevirity: ['low', 'medium', 'high', 'critical' ]
     runs-on: ubuntu-latest
     steps:
       - name: calculate
