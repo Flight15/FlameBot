@@ -31,9 +31,9 @@ jobs:
                 \"combinator\": \"and\",
                 \"rules\": [
                   {
-                    \"property\": \"$blueprint\",
-                    \"operator\": \"=\",
-                    \"value\": \"repository\"
+                    "property": "$blueprint",
+                    "operator": "=",
+                    "value": "repository"
                   }
                 ]}")
             echo $repos
