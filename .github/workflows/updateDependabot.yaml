@@ -35,10 +35,8 @@ jobs:
               \"property\": \"\$blueprint\",
               \"operator\": \"=\",
               \"value\": \"repository\"
-            }]}")
+            }]}" | jq -r '.entities[].identifier')
             echo $repos
-            test=$(echo $repos | jq -r '.entities[].identifier')
-            echo $test
             echo "INITIALIZING FOR LOOP"
             for repo in $repos ; do
               res=$(curl -s -X 'POST' \
