@@ -10,10 +10,10 @@ on:
 
 jobs: 
   calculations_job: 
-    #strategy:
-     # fail-fast: false
-     # matrix:
-       # sevirity: ['low', 'medium', 'high', 'critical']
+    strategy:
+      fail-fast: false
+      matrix:
+        sevirity: ['low', 'medium', 'high', 'critical']
     runs-on: ubuntu-latest
     steps:
       - name: calculate
@@ -55,7 +55,7 @@ jobs:
                       {
                         \"property\": \"severity\",
                         \"operator\": \"=\",
-                        \"value\": \"low\"
+                        \"value\": \"${{ matrix.sevirity }}\"
                       }
                     ]
                   }"
@@ -74,7 +74,7 @@ jobs:
                 -H 'Content-Type: application/json' \
                 -d "{
                   \"properties\": {
-                      \"low_count\": $count
+                      \"${{ matrix.sevirity }}_count\": $count
                   }
                 }"
               echo "STARTING NEXT REPO"
