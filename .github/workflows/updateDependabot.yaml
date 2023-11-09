@@ -29,7 +29,8 @@ jobs:
             -H "accept: */*" \
             -H "Authorization: Bearer $access_token" \  
             -H "Content-Type: application/json" \
-            -d "{"combinator": "and",
+            -d "{
+                "combinator": "and",
                 "rules": [
                   {
                     "property": "$blueprint",
