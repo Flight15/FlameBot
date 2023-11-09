@@ -27,16 +27,15 @@ jobs:
           repos=$(curl -s --request POST "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
             --header "Authorization: Bearer $access_token" \  
             --header "Content-Type: application/json" \
-            -d '{
-                "combinator": "and",
-                "rules": [
+            -d "{
+                \"combinator\": \"and\",
+                \"rules\": [
                   {
-                    "property": "$blueprint",
-                    "operator": "=",
-                    "value": "repository"
+                    \"property\": \"$blueprint\",
+                    \"operator\": \"=\",
+                    \"value\": \"repository\"
                   }
-                ]
-              }' | jq -r '.entities[].identifier')
+                ]}" | jq -r '.entities[].identifier')
           declare -a arr=($repos)
           echo $repos
           echo "INITIALIZING FOR LOOP"
