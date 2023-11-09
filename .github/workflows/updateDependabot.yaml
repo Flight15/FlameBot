@@ -22,22 +22,21 @@ jobs:
           access_token=$(curl --location --request POST "https://api.getport.io/v1/auth/access_token" \
             --header "Content-Type: application/json" \
             --data-raw "{\"clientId\": \"${{ secrets.PORT_CLIENT_ID }}\", \"clientSecret\": \"${{ secrets.PORT_CLIENT_SECRET }}\"}" | jq -r '.accessToken')
-              echo "PRINTING ACCESS TOKEN"
-              echo $access_token
+          echo "Access Token: $access_token
 
           repos=$(curl -X "POST" "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
             -H "accept: */*" \
             -H "Authorization: Bearer $access_token" \  
             -H "Content-Type: application/json" \
             -d "{
-                "combinator": "and",
-                "rules": [
-                  {
-                    "property": "$blueprint",
-                    "operator": "=",
-                    "value": "repository"
-                  }
-                ]
+                  "combinator": "and",
+                  "rules": [
+                    {
+                      "property": "$blueprint",
+                      "operator": "=",
+                      "value": "repository"
+                    }
+                  ]
                 }" | jq -r ".entities[].identifier")
           declare -a arr=($repos)
           echo $repos
