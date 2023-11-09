@@ -25,8 +25,8 @@ jobs:
           echo "Access Token: $access_token"
 
           repos=$(curl -s --request POST "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
-            --header "Authorization: Bearer $access_token" \  
-            --header "Content-Type: application/json" \
+            -H "Authorization: Bearer $access_token" \  
+            -H "Content-Type: application/json" \
             -d "{
                 \"combinator\": \"and\",
                 \"rules\": [
