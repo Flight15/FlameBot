@@ -76,7 +76,7 @@ jobs:
                       \"${{ matrix.sevirity }}_count\": $count
                   }
                 }")
-              echo $esponse
+              echo $response
               echo "STARTING NEXT REPO"
             done
             echo "DONE"
