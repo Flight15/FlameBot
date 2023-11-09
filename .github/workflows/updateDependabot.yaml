@@ -36,8 +36,8 @@ jobs:
                     \"value\": \"repository\"
                   }
                 ]}")
-                echo $repos
-                test= $(echo $repos | jq -r '.entities[].identifier')
+            echo $repos
+            test= $(echo $repos | jq -r '.entities[].identifier')
             echo $test
             echo "INITIALIZING FOR LOOP"
             for repo in $repos ; do
@@ -82,4 +82,3 @@ jobs:
               echo "STARTING NEXT REPO"
             done
             echo "DONE"
-    ```
