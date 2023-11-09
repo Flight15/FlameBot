@@ -29,11 +29,11 @@ jobs:
             -H "Authorization: Bearer $access_token" \
             -H "Content-Type: application/json" \
             -d "{
-            "combinator": "and",
-            "rules" : [
+            \"combinator\": \"and\",
+            "\rules\" : [
             {
-              "property": "$blueprint",
-              "operator": "=",
+              \"property\": \"$blueprint\",
+              \"operator\": \"=\",
               \"value\": \"repository\"
             }]}")
             echo $repos
