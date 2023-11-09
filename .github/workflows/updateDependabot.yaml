@@ -66,8 +66,7 @@ jobs:
               count=$(echo $res | jq '.entities | length')
               echo "PRINTING COUNT"
               echo $count
-              patchbody='{"identifier": "$repo","properties": {"low_count": "$count" }}'
-              curl -s -X 'PATCH' \
+              response=$(curl -s -X 'PATCH' \
                 "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
                 -H 'accept: */*' \
                 -H "Authorization: Bearer $access_token" \
@@ -76,7 +75,8 @@ jobs:
                   \"properties\": {
                       \"${{ matrix.sevirity }}_count\": $count
                   }
-                }"
+                }")
+              echo $esponse
               echo "STARTING NEXT REPO"
             done
             echo "DONE"
