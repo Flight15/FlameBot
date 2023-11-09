@@ -32,7 +32,7 @@ jobs:
             \"combinator\": \"and\",
             \"rules\" : [
             {
-              \"property\": \"$blueprint\",
+              \"property\": "$blueprint",
               \"operator\": \"=\",
               \"value\": \"repository\"
             }]}")
