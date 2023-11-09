@@ -30,7 +30,7 @@ jobs:
             -H "Content-Type: application/json" \
             -d "{
             \"combinator\": \"and\",
-            "\rules\" : [
+            \"rules\" : [
             {
               \"property\": \"$blueprint\",
               \"operator\": \"=\",
