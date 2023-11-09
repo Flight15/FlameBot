@@ -28,7 +28,7 @@ jobs:
             -H "accept: */*" \
             -H "Authorization: Bearer $access_token" \  
             -H "Content-Type: application/json" \
-            -d "{
+            -d '{
                   "combinator": "and",
                   "rules": [
                     {
@@ -37,7 +37,7 @@ jobs:
                       "value": "repository"
                     }
                   ]
-                }" | jq -r ".entities[].identifier")
+                }' | jq -r ".entities[].identifier")
           declare -a arr=($repos)
           echo $repos
           echo "INITIALIZING FOR LOOP"
