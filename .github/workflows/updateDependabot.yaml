@@ -35,48 +35,51 @@ jobs:
                     \"operator\": \"=\",
                     \"value\": \"repository\"
                   }
-                ]}" | jq -r '.entities[].identifier')
-          echo $repos
-          echo "INITIALIZING FOR LOOP"
-          for repo in $repos ; do
-            res=$(curl -s -X 'POST' \
-              'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
-              -H 'accept: */*' \
-              -H 'Content-Type: application/json' \
-              -H "Authorization: Bearer $access_token" \
-              -d "{
-                \"combinator\": \"and\",
-                  \"rules\": [
-                    {
-                      \"blueprint\": \"repository\",
-                      \"operator\": \"relatedTo\",
-                      \"value\": \"$repo\"
-                    },
-                    {
-                      \"property\": \"severity\",
-                      \"operator\": \"=\",
-                      \"value\": \"low\"
-                    }
-                  ]
+                ]}")
+                echo $repos
+                test= $(echo $repos | jq -r '.entities[].identifier')
+            echo $test
+            echo "INITIALIZING FOR LOOP"
+            for repo in $repos ; do
+              res=$(curl -s -X 'POST' \
+                'https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false' \
+                -H 'accept: */*' \
+                -H 'Content-Type: application/json' \
+                -H "Authorization: Bearer $access_token" \
+                -d "{
+                  \"combinator\": \"and\",
+                    \"rules\": [
+                      {
+                        \"blueprint\": \"repository\",
+                        \"operator\": \"relatedTo\",
+                        \"value\": \"$repo\"
+                      },
+                      {
+                        \"property\": \"severity\",
+                        \"operator\": \"=\",
+                        \"value\": \"low\"
+                      }
+                    ]
+                  }"
+                )
+              echo "done searching"
+              echo $repo
+              echo "CALCULATING COUNT"
+              count=$(echo $res | jq '.entities | length')
+              echo "PRINTING COUNT"
+              echo $count
+              patchbody='{"identifier": "$repo","properties": {"low_count": "$count" }}'
+              curl -s -X 'PATCH' \
+                "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
+                -H 'accept: */*' \
+                -H "Authorization: Bearer $access_token" \
+                -H 'Content-Type: application/json' \
+                -d "{
+                  \"properties\": {
+                      \"low_count\": $count
+                  }
                 }"
-              )
-            echo "done searching"
-            echo $repo
-            echo "CALCULATING COUNT"
-            count=$(echo $res | jq '.entities | length')
-            echo "PRINTING COUNT"
-            echo $count
-            patchbody='{"identifier": "$repo","properties": {"low_count": "$count" }}'
-            curl -s -X 'PATCH' \
-              "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
-              -H 'accept: */*' \
-              -H "Authorization: Bearer $access_token" \
-              -H 'Content-Type: application/json' \
-              -d "{
-                \"properties\": {
-                    \"low_count\": $count
-                }
-              }"
-            echo "STARTING NEXT REPO"
-          done
-          echo "DONE"
+              echo "STARTING NEXT REPO"
+            done
+            echo "DONE"
+    ```
