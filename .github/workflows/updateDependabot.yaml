@@ -29,15 +29,15 @@ jobs:
             -H "Authorization: Bearer $access_token" \  
             -H "Content-Type: application/json" \
             -d '{
-                  "combinator": "and",
-                  "rules": [
-                    {
-                      "property": "$blueprint",
-                      "operator": "=",
-                      "value": "repository"
-                    }
-                  ]
-                }' | jq -r ".entities[].identifier")
+                "combinator": "and",
+                "rules": [
+                  {
+                    "property": "$blueprint",
+                    "operator": "=",
+                    "value": "repository"
+                  }
+                ]
+              }' | jq -r '.entities[].identifier')
           declare -a arr=($repos)
           echo $repos
           echo "INITIALIZING FOR LOOP"
