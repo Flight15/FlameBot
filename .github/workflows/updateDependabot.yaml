@@ -22,7 +22,7 @@ jobs:
               access_token=$(curl --location --request POST "https://api.getport.io/v1/auth/access_token" --header "Content-Type: application/json" --data-raw "{
                   \"clientId\": "${{ secrets.PORT_CLIENT_ID }}",
                   \"clientSecret\": "${{ secrets.PORT_CLIENT_SECRET }}"
-                  }")
+                  }" | jq -r ".accessToken")
                   echo "PRINTING ACCESS TOKEN"
                   echo $access_token
 
