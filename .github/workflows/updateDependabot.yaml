@@ -36,7 +36,6 @@ jobs:
               \"operator\": \"=\",
               \"value\": \"repository\"
             }]}" | jq -r '.entities[].identifier')
-            echo $repos
             echo "INITIALIZING FOR LOOP"
             for repo in $repos ; do
               res=$(curl -s -X 'POST' \
@@ -61,11 +60,9 @@ jobs:
                   }"
                 )
               echo "done searching"
-              echo $repo
               echo "CALCULATING COUNT"
               count=$(echo $res | jq '.entities | length')
-              echo "PRINTING COUNT"
-              echo $count
+              echo "UPDATING PORT"
               response=$(curl -s -X 'PATCH' \
                 "https://api.getport.io/v1/blueprints/repository/entities/$repo?create_missing_related_entities=false" \
                 -H 'accept: */*' \
@@ -76,7 +73,6 @@ jobs:
                       \"${{ matrix.sevirity }}_count\": $count
                   }
                 }")
-              echo $response
               echo "STARTING NEXT REPO"
             done
             echo "DONE"
