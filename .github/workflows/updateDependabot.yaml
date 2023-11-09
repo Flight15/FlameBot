@@ -24,7 +24,7 @@ jobs:
             --data-raw "{\"clientId\": \"${{ secrets.PORT_CLIENT_ID }}\", \"clientSecret\": \"${{ secrets.PORT_CLIENT_SECRET }}\"}" | jq -r '.accessToken')
           echo "Access Token: $access_token"
 
-          repos=$(curl -s -X "POST" "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
+          repos=$(curl -s --request POST "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
             --header "accept: */*" \
             --header "Authorization: Bearer $access_token" \  
             --header "Content-Type: application/json" \
