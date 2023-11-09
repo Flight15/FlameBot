@@ -22,9 +22,9 @@ jobs:
               access_token=$(curl --location --request POST "https://api.getport.io/v1/auth/access_token" --header "Content-Type: application/json" --data-raw "{ \
                   \"clientId\": "${{ secrets.PORT_CLIENT_ID }}", \
                   \"clientSecret\": "${{ secrets.PORT_CLIENT_SECRET }}" \
-                  }" | jq ".accessToken") \
-                  echo "PRINTING ACCESS TOKEN" \
-                  echo $access_token \
+                  }" | jq ".accessToken") 
+                  echo "PRINTING ACCESS TOKEN" 
+                  echo $access_token 
 
                   repos=$(curl -X "POST" \  
                   "https://api.getport.io/v1/entities/search?exclude_calculated_properties=false&attach_title_to_relation=false" \
