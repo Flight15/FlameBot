@@ -18,9 +18,10 @@ jobs:
   debug_data:
     name: Debug Input Data
     runs-on: ubuntu-latest
-    run: |
-      echo "Input Data: ${{ inputs.port_payload }}"
-      echo "Parsed JSON: $(fromJson(inputs.port_payload))"
+    steps:
+      - run: |
+         echo "Input Data: ${{ inputs.port_payload }}"
+         echo "Parsed JSON: $(fromJson(inputs.port_payload))"
 
 
   scaffold:
