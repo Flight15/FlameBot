@@ -33,7 +33,7 @@ jobs:
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
-          portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties.options) }}
+          portUserInputs: ${{ fromJson(inputs.port_payload).payload.properties.options }}
           cookiecutterTemplate: ${{ fromJson(inputs.port_payload).payload.properties.template }}
           blueprintIdentifier: "repository"
           organizationName: Flight15
