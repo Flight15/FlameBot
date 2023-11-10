@@ -15,15 +15,6 @@ on:
       PORT_CLIENT_SECRET:
         required: true
 jobs:
-  debug_data:
-    name: Debug Input Data
-    runs-on: ubuntu-latest
-    steps:
-      - run: |
-         echo "Input Data: ${{ inputs.port_payload }}"
-         echo "Parsed JSON: $(fromJson(inputs.port_payload))"
-
-
   scaffold:
     runs-on: ubuntu-latest
     steps:
@@ -42,7 +33,7 @@ jobs:
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
-          portUserInputs: ${{ inputs.port_payload.payload.properties.options }}
+          portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties.options) }}
           cookiecutterTemplate: ${{ fromJson(inputs.port_payload).payload.properties.template }}
           blueprintIdentifier: "repository"
           organizationName: Flight15
