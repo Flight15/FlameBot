@@ -15,6 +15,11 @@ on:
       PORT_CLIENT_SECRET:
         required: true
 jobs:
+  - name: Debug Input Data
+    run: |
+      echo "Input Data: ${{ inputs.port_payload }}"
+      echo "Parsed JSON: $(fromJson(inputs.port_payload))"
+
   scaffold:
     runs-on: ubuntu-latest
     steps:
