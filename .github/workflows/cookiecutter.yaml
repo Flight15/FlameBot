@@ -18,7 +18,7 @@ jobs:
   scaffold:
     runs-on: ubuntu-latest
     steps:
-      - name: Add log to Port action
+      - name: test ref
         uses: port-labs/port-github-action@v1
         with:
           clientId: ${{ secrets.PORT_CLIENT_ID }}
