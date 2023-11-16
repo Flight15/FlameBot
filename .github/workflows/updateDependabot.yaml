@@ -1,4 +1,4 @@
-name: update Dependabot
+name: updateDependabot
 
 on:
   workflow_dispatch:
