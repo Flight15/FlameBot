@@ -1,0 +1,43 @@
+// build.gradle
+
+// Define the project and set the project's group and version
+group 'com.example'
+version '1.0-SNAPSHOT'
+
+// Apply the Java plugin
+apply plugin: 'java'
+
+// Set the source and target compatibility for the Java compilation
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+// Define dependencies
+dependencies {
+    // Use the JUnit testing library
+    testImplementation 'junit:junit:4.12'
+
+    // Use the Apache Commons Lang library
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+
+    // Use the Log4j logging library
+    implementation 'org.apache.logggiting.log4j:log4j-api:2.14.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+}
+
+// Define tasks
+task compileJava {
+    // Customize the Java compilation task if needed
+    // For example, setting additional options
+    options.compilerArgs << '-Xlint:unchecked'
+}
+
+// Define a custom task named 'customTask'
+task customTask {
+    // Define the actions to be performed by the task
+    doLast {
+        println "Executing custom task"
+    }
+}
+
+// Specify the main class for the application
+mainClassName = 'com.example.MyMainClass'
