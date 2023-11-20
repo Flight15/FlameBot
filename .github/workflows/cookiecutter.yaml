@@ -26,14 +26,14 @@ jobs:
           operation: PATCH_RUN
           runId: ${{ fromJson(inputs.port_payload).context.runId }}
           logMessage: "Scaffolding a new repository from Cookiecutter template 🏃‍♂️"
-      - uses: port-labs/cookiecutter-gha@v1
+      - uses: port-labs/cookiecutter-gha@e0b987205dff1e787398184e6d9e9f470d2a30a4
         with:
           portClientId: ${{ secrets.PORT_CLIENT_ID }}
           portClientSecret: ${{ secrets.PORT_CLIENT_SECRET }}
           token: ${{ secrets.ORG_ADMIN_TOKEN }}
           portRunId: ${{ fromJson(inputs.port_payload).context.runId }}
           repositoryName: ${{ fromJson(inputs.port_payload).payload.properties.name }}
-          portUserInputs: ${{ toJson(fromJson(inputs.port_payload).payload.properties.options) }}
+          portUserInputs: ${{ fromJson(inputs.port_payload).payload.properties.options }}
           cookiecutterTemplate: ${{ fromJson(inputs.port_payload).payload.properties.template }}
           blueprintIdentifier: "repository"
           organizationName: Flight15
