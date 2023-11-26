@@ -4,15 +4,23 @@ import os
 
 API_URL = 'https://api.getport.io/v1'
 
-OLD_JWT = os.getenv("OLD_JWT")
-NEW_JWT = os.getenv("NEW_JWT")
+OLD_CLIENT_ID = os.getenv("OLD_CLIENT_ID")
+OLD_CLIENT_SECRET = os.getenv("OLD_CLIENT_SECRET")
+NEW_CLIENT_ID = os.getenv("NEW_CLIENT_ID")
+NEW_CLIENT_SECRET = os.getenv("NEW_CLIENT_SECRET")
 
+old_credentials = { 'clientId': OLD_CLIENT_ID, 'clientSecret': OLD_CLIENT_SECRET }
+old_token_response = requests.post(f'{API_URL}/auth/access_token', json=old_credentials)
+old_access_token = old_token_response.json()["accessToken"]
 old_headers = {
-    'Authorization': f'Bearer {OLD_JWT}'
+    'Authorization': f'Bearer {old_access_token}'
 }
 
+new_credentials = { 'clientId': NEW_CLIENT_ID, 'clientSecret': NEW_CLIENT_SECRET }
+new_token_response = requests.post(f'{API_URL}/auth/access_token', json=new_credentials)
+new_access_token = new_token_response.json()["accessToken"]
 new_headers = {
-    'Authorization': f'Bearer {NEW_JWT}'
+    'Authorization': f'Bearer {new_access_token}'
 }
 
 
@@ -22,13 +30,13 @@ def getBlueprints():
     return resp
 
 def postBlueprints(blueprints):
-    blueprintsWithoutRelation = blueprints
+    blueprintsWithoutRelation = blueprints.copy()
     for bp in blueprintsWithoutRelation:
         bp.get("relations").clear()
         bp.get("mirrorProperties").clear()
-        res = requests.post(f'{API_URL}/blueprints', headers=new_headers, json=bp)
+        requests.post(f'{API_URL}/blueprints', headers=new_headers, json=bp)
     for blueprint in blueprints:
-        res = requests.post(f'{API_URL}/blueprints', headers=new_headers, json=blueprint)
+        requests.post(f'{API_URL}/blueprints', headers=new_headers, json=blueprint)
 
 def postEntities(blueprints):
     for blueprint in blueprints:
