@@ -27,4 +27,4 @@ def main():
         res = requests.get(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities', headers=old_headers)
         resp = res.json()["entities"]
         for entity in resp:
-            res = requests.post(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities', headers=new_headers, json=entity)
+            res = requests.post(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities?upsert=true&validation_only=false&create_missing_related_entities=true&merge=false', headers=new_headers, json=entity)
