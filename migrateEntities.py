@@ -5,6 +5,8 @@ import copy
 
 API_URL = 'https://api.getport.io/v1'
 
+#Fill in the secrets or set them as environment variables
+
 OLD_CLIENT_ID = "" # or set to os.getenv("OLD_CLIENT_ID")
 OLD_CLIENT_SECRET = "" # or set to os.getenv("OLD_CLIENT_SECRET")
 NEW_CLIENT_ID = "" # or set to os.getenv("NEW_CLIENT_ID")
@@ -38,10 +40,14 @@ def postBlueprints(blueprints):
         print(f"posting blueprint {bp['identifier']}")
         bp.get("relations").clear()
         bp.get("mirrorProperties").clear()
-        requests.post(f'{API_URL}/blueprints', headers=new_headers, json=bp)
+        res = requests.post(f'{API_URL}/blueprints', headers=new_headers, json=bp)
+        if res.status_code != 200:
+            print("error posting blueprint:" + res.json())
     for blueprint in blueprints:
-        print(f"posting blueprint {blueprint['identifier']} with relations")
-        requests.patch(f'{API_URL}/blueprints/{blueprint["identifier"]}', headers=new_headers, json=blueprint)
+        print(f"patching blueprint {blueprint['identifier']} with relations")
+        res = requests.patch(f'{API_URL}/blueprints/{blueprint["identifier"]}', headers=new_headers, json=blueprint)
+        if res.status_code != 200:
+            print("error patching blueprint:" + res.json())
 
 def postEntities(blueprints):
     for blueprint in blueprints:
@@ -53,6 +59,8 @@ def postEntities(blueprints):
             if entity["icon"] is None:
                 entity.pop("icon", None)
             res = requests.post(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities?upsert=true&validation_only=false&create_missing_related_entities=true&merge=false', headers=new_headers, json=entity)
+            if res.status_code != 200:
+                print("error posting entity:" + res.json())
 
 def main():
     blueprints = getBlueprints()
