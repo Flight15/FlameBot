@@ -5,10 +5,10 @@ import copy
 
 API_URL = 'https://api.getport.io/v1'
 
-OLD_CLIENT_ID = "2gA7Yt4tsfH9RwRnbmp3ElzArMjNPmJr"
-OLD_CLIENT_SECRET = "TJO25UQCp1k4UJBZP6pHw5zGQ1ncJ4809A9GdPy2CE4Ne4ec3Ygj4BglmwBYnmJU"
-NEW_CLIENT_ID = "XDalGUcKnHxdJamoeRpC6IXOvzZrxxHd"
-NEW_CLIENT_SECRET = "6EnqyYlrrJ8IEabrXnD1qvfBt4EKGOYSTuGjR9Y6zktbfHLMiIkZPanVMmWtQspQ"
+OLD_CLIENT_ID = ""
+OLD_CLIENT_SECRET = ""
+NEW_CLIENT_ID = ""
+NEW_CLIENT_SECRET = ""
 
 old_credentials = { 'clientId': OLD_CLIENT_ID, 'clientSecret': OLD_CLIENT_SECRET }
 old_credentials = requests.post(f'{API_URL}/auth/access_token', json=old_credentials)
