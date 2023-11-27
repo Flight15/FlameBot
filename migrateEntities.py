@@ -1,48 +1,57 @@
 import json
 import requests
 import os
+import copy
 
 API_URL = 'https://api.getport.io/v1'
 
-OLD_CLIENT_ID = os.getenv("OLD_CLIENT_ID")
-OLD_CLIENT_SECRET = os.getenv("OLD_CLIENT_SECRET")
-NEW_CLIENT_ID = os.getenv("NEW_CLIENT_ID")
-NEW_CLIENT_SECRET = os.getenv("NEW_CLIENT_SECRET")
+OLD_CLIENT_ID = "2gA7Yt4tsfH9RwRnbmp3ElzArMjNPmJr"
+OLD_CLIENT_SECRET = "TJO25UQCp1k4UJBZP6pHw5zGQ1ncJ4809A9GdPy2CE4Ne4ec3Ygj4BglmwBYnmJU"
+NEW_CLIENT_ID = "XDalGUcKnHxdJamoeRpC6IXOvzZrxxHd"
+NEW_CLIENT_SECRET = "6EnqyYlrrJ8IEabrXnD1qvfBt4EKGOYSTuGjR9Y6zktbfHLMiIkZPanVMmWtQspQ"
 
 old_credentials = { 'clientId': OLD_CLIENT_ID, 'clientSecret': OLD_CLIENT_SECRET }
-old_token_response = requests.post(f'{API_URL}/auth/access_token', json=old_credentials)
-old_access_token = old_token_response.json()["accessToken"]
+old_credentials = requests.post(f'{API_URL}/auth/access_token', json=old_credentials)
+old_access_token = old_credentials.json()["accessToken"]
 old_headers = {
     'Authorization': f'Bearer {old_access_token}'
 }
 
 new_credentials = { 'clientId': NEW_CLIENT_ID, 'clientSecret': NEW_CLIENT_SECRET }
-new_token_response = requests.post(f'{API_URL}/auth/access_token', json=new_credentials)
-new_access_token = new_token_response.json()["accessToken"]
+new_credentials = requests.post(f'{API_URL}/auth/access_token', json=new_credentials)
+new_access_token = new_credentials.json()["accessToken"]
 new_headers = {
     'Authorization': f'Bearer {new_access_token}'
 }
 
 
 def getBlueprints():
+    print("Getting blueprints")
     res = requests.get(f'{API_URL}/blueprints', headers=old_headers)
     resp = res.json()["blueprints"]
     return resp
 
 def postBlueprints(blueprints):
-    blueprintsWithoutRelation = blueprints.copy()
+    print("Posting blueprints")
+    blueprintsWithoutRelation = copy.deepcopy(blueprints)
     for bp in blueprintsWithoutRelation:
+        print(f"posting blueprint {bp['identifier']}")
         bp.get("relations").clear()
         bp.get("mirrorProperties").clear()
         requests.post(f'{API_URL}/blueprints', headers=new_headers, json=bp)
     for blueprint in blueprints:
-        requests.post(f'{API_URL}/blueprints', headers=new_headers, json=blueprint)
+        print(f"posting blueprint {blueprint['identifier']} with relations")
+        requests.patch(f'{API_URL}/blueprints/{blueprint["identifier"]}', headers=new_headers, json=blueprint)
 
 def postEntities(blueprints):
     for blueprint in blueprints:
+        print(f"getting entities for blueprint {blueprint['identifier']}")
         res = requests.get(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities', headers=old_headers)
         resp = res.json()["entities"]
+        print(f"posting entities for blueprint {blueprint['identifier']}")
         for entity in resp:
+            if entity["icon"] is None:
+                entity.pop("icon", None)
             res = requests.post(f'{API_URL}/blueprints/{blueprint["identifier"]}/entities?upsert=true&validation_only=false&create_missing_related_entities=true&merge=false', headers=new_headers, json=entity)
 
 def main():
@@ -50,4 +59,5 @@ def main():
     postBlueprints(blueprints)
     postEntities(blueprints)
     
-        
+if __name__ == "__main__":
+    main()
