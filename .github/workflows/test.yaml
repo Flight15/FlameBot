@@ -15,7 +15,7 @@ on:
       json_secret:
         required: true
         description: "Placeholder"
-        type: json  # Keep the type as string
+        type: string  # Keep the type as string
         
 jobs:
   create-secret:
