@@ -31,6 +31,10 @@ jobs:
           echo "${{ inputs.secret_name }}"
           
       - name: Echo JSON Payload
+        env:
+          PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
+          ENCRYPTED_PROPERTY: ${{ inputs.secret_json }}
         run: |
           echo "JSON Payload:"
-          echo "${{ inputs.json_secret }}"
+          test=$(python3 .github/workflows/decrypt.py)
+          echo $test
