@@ -33,4 +33,4 @@ jobs:
       - name: Echo JSON Payload
         run: |
           echo "JSON Payload:"
-          echo "${{ fromJson(inputs.json_secret) }}"
+          echo "${{ inputs.json_secret }}"
