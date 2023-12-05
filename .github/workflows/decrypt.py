@@ -4,8 +4,7 @@ import os
 from Crypto.Cipher import AES
 
 PORT_CLIENT_SECRET = os.getenv("PORT_CLIENT_SECRET")
-# ENCRYPTED_PROPERTY = os.getenv("ENCRYPTED_PROPERTY")
-ENCRYPTED_PROPERTY="yCkpNW4e5wAHTmNsXwHfAR8n3ERrarCwRAq+I5OhygVpIMy/x/llssDs+qpUeg=="
+ENCRYPTED_PROPERTY = os.getenv("ENCRYPTED_PROPERTY")
 
 PROPERY_IS_JSON = True
 
