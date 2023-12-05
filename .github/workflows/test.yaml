@@ -36,5 +36,6 @@ jobs:
           ENCRYPTED_PROPERTY: ${{ inputs.secret_json }}
         run: |
           echo "JSON Payload:"
+          pip3 install pycryptodome requests
           test=$(python3 .github/workflows/decrypt.py)
           echo $test
