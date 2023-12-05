@@ -33,7 +33,7 @@ jobs:
       - name: Echo JSON Payload
         env:
           PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
-          ENCRYPTED_PROPERTY: ${{ inputs.secret_json }}
+          ENCRYPTED_PROPERTY: ${{ inputs.json_secret }}
         run: |
           echo "JSON Payload:"
           pip3 install pycryptodome requests
