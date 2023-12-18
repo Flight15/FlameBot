@@ -1,27 +1,20 @@
-import base64
-import json
+import requests
 import os
-from Crypto.Cipher import AES
 
-PORT_CLIENT_SECRET = os.getenv("PORT_CLIENT_SECRET")
-ENCRYPTED_PROPERTY = os.getenv("ENCRYPTED_PROPERTY")
+port_client_id = os.environ['PORT_CLIENT_ID']
+port_client_secret = os.environ['PORT_CLIENT_SECRET']
+api_url = "https://api.getport.io/v1"
 
-PROPERY_IS_JSON = True
+credentials = {"client_id": port_client_id, "client_secret": port_client_secret}
+res = requests.post(f"{api_url}/auth/access_token", json=credentials)
+access_token = res.json()["access_token"]
+headers = {
+    "Authorization": f"Bearer {access_token}"
+}
 
-key = PORT_CLIENT_SECRET[:32].encode()
+port_members = requests.get(f"{api_url}/teams/Port%20Member?fields=name&fields=users.email", headers=headers).json()
+port_moderators = requests.get(f"{api_url}/teams/Port%20Moderator?fields=name&fields=users.email", headers=headers).json()
+port_admins = requests.get(f"{api_url}/teams/Port%20Admin?fields=name&fields=users.email", headers=headers).json()
 
-
-encrypted_property_value = base64.b64decode(ENCRYPTED_PROPERTY)
-
-iv = encrypted_property_value[:16]
-ciphertext = encrypted_property_value[16:-16]
-mac = encrypted_property_value[-16:]
-
-cipher = AES.new(key, AES.MODE_GCM, iv)
-
-# decrypt the property
-decrypted_property_value = cipher.decrypt_and_verify(ciphertext, mac)
-property_value = json.loads(decrypted_property_value) if PROPERY_IS_JSON else decrypted_property_value
-
-
-print(property_value)
+for member in port_members["users"]:
+    print(member["email"])
