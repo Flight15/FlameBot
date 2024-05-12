@@ -13,6 +13,11 @@ on:
       PORT_CLIENT_SECRET:
         required: true
 jobs:
+  print:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        
   scaffold:
     runs-on: ubuntu-latest
     steps:
