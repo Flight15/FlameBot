@@ -12,6 +12,8 @@ on:
         required: true
       PORT_CLIENT_SECRET:
         required: true
+      ref:
+        required: true
 jobs:
   scaffold:
     runs-on: ubuntu-latest
