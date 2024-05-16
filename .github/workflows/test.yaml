@@ -1,41 +1,19 @@
-# portCreateRepo.yaml
+name: Snyk Exporter Workflow
 
-name: Scaffold a new service
+# This workflow responsible for running Snyk exporter.
+
 on:
   workflow_dispatch:
-    inputs:
-      port_payload:
-        required: true
-        description: "Port's payload, including details for who triggered the action and general context (blueprint, run id, etc...)"
-        type: string
-      secret_name:
-        required: true
-        description: "Placeholder"
-        type: string
-      json_secret:
-        required: true
-        description: "Placeholder"
-        type: string  # Keep the type as string
-        
+
 jobs:
-  create-secret:
+  run-integration:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        
-      - name: Echo Secret Name
-        run: |
-          echo "Port Payload Secret:"
-          echo "${{ inputs.secret_name }}"
-          
-      - name: Echo JSON Payload
-        env:
-          PORT_CLIENT_SECRET: ${{ secrets.PORT_CLIENT_SECRET }}
-          ENCRYPTED_PROPERTY: ${{ inputs.json_secret }}
-        run: |
-          echo "JSON Payload:"
-          pip3 install pycryptodome requests
-          test=$(python3 .github/workflows/decrypt.py)
-          echo $test
+      - uses: port-labs/ocean-sail@v1
+        with:
+          type: 'snyk'
+          port_client_id: ${{ secrets.OCEAN__PORT__CLIENT_ID }}
+          port_client_secret: ${{ secrets.OCEAN__PORT__CLIENT_SECRET }}
+          config: |
+            token: ${{ secrets.OCEAN__INTEGRATION__CONFIG__TOKEN }}
