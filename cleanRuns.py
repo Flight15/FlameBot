@@ -3,8 +3,8 @@ import requests
 
 API_URL = 'https://api.getport.io/v1'
 
-CLIENT_ID = "2gA7Yt4tsfH9RwRnbmp3ElzArMjNPmJr"
-CLIENT_SECRET = "TJO25UQCp1k4UJBZP6pHw5zGQ1ncJ4809A9GdPy2CE4Ne4ec3Ygj4BglmwBYnmJU" 
+CLIENT_ID = "PORT_ID"
+CLIENT_SECRET = "PORT_SECRET" 
 
 
 credentials = { 'clientId': CLIENT_ID, 'clientSecret': CLIENT_SECRET }
