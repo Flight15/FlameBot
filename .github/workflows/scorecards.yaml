@@ -3,7 +3,7 @@ name: Scorecard Update
 on:
   push:
     paths:
-      - 'scorecards/*.json'
+      - 'Scorecards/*.json'
 
 jobs:
   send_scorecard:
