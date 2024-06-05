@@ -32,8 +32,11 @@ jobs:
             Scorecards/*
 
       - name: Process changed files
+        env:
+            CHANGED_FILES: ${{ steps.changed-files-specific.outputs.all_changed_files }}
         run: |
-          for file in ${{  steps.changed-files-specific.outputs.all_changed_files }}; do
+          echo "Changed files: $CHANGED_FILES"
+          for file in ${CHANGED_FILES}; do
             if [[ $file == scorecards/*.json ]]; then
               filename=$(basename $file .json)
               content=$(cat $file | jq -c .)
