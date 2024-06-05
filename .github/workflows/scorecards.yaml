@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Check out the repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
 
       - name: Get API Token
         id: get_token
@@ -30,7 +30,7 @@ jobs:
             if [[ $file == scorecards/*.json ]]; then
               filename=$(basename $file .json)
               content=$(cat $file | jq -c .)
-              curl -X PUT "https://your.api.endpoint/${filename}" \
+              curl -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
                 -H "Authorization: Bearer ${{ env.access_token }}" \
                 -H "Content-Type: application/json" \
                 -d "$content"
