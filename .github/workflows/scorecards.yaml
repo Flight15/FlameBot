@@ -37,13 +37,11 @@ jobs:
         run: |
           echo "Changed files: $CHANGED_FILES"
           for file in ${CHANGED_FILES}; do
-            if [[ $file == scorecards/*.json ]]; then
-              filename=$(basename $file .json)
-              content=$(cat $file | jq -c .)
-              curl -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
-                -H "Authorization: Bearer ${{ env.access_token }}" \
-                -H "Content-Type: application/json" \
-                -d "$content"
-            fi
+            filename=$(basename $file .json)
+            content=$(cat $file | jq -c .)
+            curl -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
+            -H "Authorization: Bearer ${{ env.access_token }}" \
+            -H "Content-Type: application/json" \
+            -d "$content"
           done
         shell: bash
