@@ -1,0 +1,27 @@
+name: Scorecard Update
+
+on:
+  push:
+    paths:
+      - 'scorecards/*.json'
+
+jobs:
+  send_scorecard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Process changed files
+        run: |
+          for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
+            if [[ $file == scorecards/*.json ]]; then
+              filename=$(basename $file .json)
+              content=$(cat $file | jq -c .)
+              curl -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
+                -H "Content-Type: application/json" \
+                -d "$content"
+            fi
+          done
+        shell: bash
