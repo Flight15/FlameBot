@@ -24,6 +24,15 @@ jobs:
           }' | jq '.accessToken' | sed 's/"//g')
           echo "access_token=$access_token" >> $GITHUB_ENV
 
+      - name: Determine Commit Range
+        id: commit_range
+        run: |
+            if [ "${{ github.event.before }}" = "0000000000000000000000000000000000000000" ]; then
+            echo "before_sha=$(git rev-parse HEAD~1)" >> $GITHUB_ENV
+            else
+            echo "before_sha=${{ github.event.before }}" >> $GITHUB_ENV
+            fi
+
       - name: Process changed files
         run: |
           for file in $(git diff --name-only ${{ github.event.before }} ${{ github.sha }}); do
