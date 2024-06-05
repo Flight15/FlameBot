@@ -1,6 +1,6 @@
 [
     {
-        "identifier": "prTest",
+        "identifier": "testPR",
         "title": "prTestest",
         "filter": {
             "combinator": "and",

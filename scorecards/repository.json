@@ -1,6 +1,6 @@
 [
     {
-        "identifier": "repoTest",
+        "identifier": "testREPO",
         "title": "repoTestest",
         "filter": {
             "combinator": "and",
