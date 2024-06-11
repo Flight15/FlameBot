@@ -33,15 +33,24 @@ jobs:
 
       - name: Process changed files
         env:
-            CHANGED_FILES: ${{ steps.changed-files-specific.outputs.all_changed_files }}
+          CHANGED_FILES: ${{ steps.changed-files-specific.outputs.all_changed_files }}
         run: |
           echo "Changed files: $CHANGED_FILES"
+          error_occurred=false
           for file in ${CHANGED_FILES}; do
             filename=$(basename $file .json)
             content=$(cat $file | jq -c .)
-            curl -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
-            -H "Authorization: Bearer ${{ env.access_token }}" \
-            -H "Content-Type: application/json" \
-            -d "$content"
+            response=$(curl -w "%{http_code}" -o /dev/null -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
+              -H "Authorization: Bearer ${{ env.access_token }}" \
+              -H "Content-Type: application/json" \
+              -d "$content")
+            if [ $response -ne 200 ]; then
+              echo "Failed to send $file. HTTP status code: $response"
+              error_occurred=true
+            fi
           done
+          if [ "$error_occurred" = true ]; then
+            echo "One or more requests failed."
+            exit 1
+          fi
         shell: bash
