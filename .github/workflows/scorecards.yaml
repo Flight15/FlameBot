@@ -51,6 +51,7 @@ jobs:
               rm response_body.txt
               error_occurred=true
             else
+              echo "Successfully sent $file."
               rm response_body.txt
             fi
           done
