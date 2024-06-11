@@ -1,38 +1,40 @@
-{
-    "identifier": "Ownership",
-    "title": "Ownership",
-    "levels": [
-        {
-            "color": "paleBlue",
-            "title": "Basic"
-        },
-        {
-            "color": "bronze",
-            "title": "Bronze"
-        },
-        {
-            "color": "silver",
-            "title": "Silver"
-        },
-        {
-            "color": "gold",
-            "title": "Gold"
-        }
-    ],
-    "rules": [
-        {
-            "identifier": "hasTeam",
-            "title": "Has Team",
-            "level": "Bronze",
-            "query": {
-                "combinator": "and",
-                "conditions": [
-                    {
-                        "operator": "isNotEmpty",
-                        "property": "$team"
-                    }
-                ]
+[
+    {
+        "identifier": "Ownership",
+        "title": "Ownership",
+        "levels": [
+            {
+                "color": "paleBlue",
+                "title": "Basic"
+            },
+            {
+                "color": "bronze",
+                "title": "Bronze"
+            },
+            {
+                "color": "silver",
+                "title": "Silver"
+            },
+            {
+                "color": "gold",
+                "title": "Gold"
             }
-        }
-    ]
-}
+        ],
+        "rules": [
+            {
+                "identifier": "hasTeam",
+                "title": "Has Team",
+                "level": "Bronze",
+                "query": {
+                    "combinator": "and",
+                    "conditions": [
+                        {
+                            "operator": "isNotEmpty",
+                            "property": "$team"
+                        }
+                    ]
+                }
+            }
+        ]
+    }
+]
