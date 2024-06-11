@@ -40,13 +40,18 @@ jobs:
           for file in ${CHANGED_FILES}; do
             filename=$(basename $file .json)
             content=$(cat $file | jq -c .)
-            response=$(curl -w "%{http_code}" -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
+            response=$(curl -s -o response_body.txt -w "%{http_code}" -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
               -H "Authorization: Bearer ${{ env.access_token }}" \
               -H "Content-Type: application/json" \
               -d "$content")
-            if [ $response -ne 200 ]; then
+            if [ "$response" -ne 200 ]; then
               echo "Failed to send $file. HTTP status code: $response"
+              echo "Response body:"
+              cat response_body.txt
+              rm response_body.txt
               error_occurred=true
+            else
+              rm response_body.txt
             fi
           done
           if [ "$error_occurred" = true ]; then
