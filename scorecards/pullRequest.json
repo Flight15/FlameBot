@@ -1,7 +1,7 @@
 [
     {
         "identifier": "omri3",
-        "title": "omri2",
+        "title": "test1",
         "filter": {
             "combinator": "and",
             "conditions": [
