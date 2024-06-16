@@ -1,14 +1,14 @@
 [
     {
-        "identifier": "Ownership",
+        "identifier": "fsafafsa",
         "title": "lastTest",
         "levels": [
             {
-                "color": "paleBlue",
+                "color": "fsafasfa",
                 "title": "Basic"
             },
             {
-                "color": "bronze",
+                "color": "fsafasfafsasda",
                 "title": "Bronze"
             },
             {
@@ -16,13 +16,13 @@
                 "title": "Silver"
             },
             {
-                "color": "gold",
+                "color": "dsdsds",
                 "title": "Gold"
             }
         ],
         "rules": [
             {
-                "identifier": "hasTeam",
+                "identifier": "hadsdsdsdssTeam",
                 "title": "Has Team",
                 "level": "Bronze",
                 "query": {
