@@ -1,2 +1,1 @@
-This is a test.
-Testitest.
+one test
