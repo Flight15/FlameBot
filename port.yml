@@ -8,3 +8,9 @@
   blueprint: domain
   properties:
     architecture: https://lucid.app/documents/embedded/533f05ad-aa68-43ce-9499-c5f767dc8ea
+
+- identifier: AyeLmao
+  title: AyeLmao
+  blueprint: env_domain
+  relations:
+    domain: randomDomain
