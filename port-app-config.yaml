@@ -1,0 +1,15 @@
+  - kind: file
+    selector:
+      query: 'true'
+      files:
+        - path: '**/testing.json'
+          repos:
+            - Node
+            - FlameBot
+    port:
+      entity:
+        mappings:
+          identifier: .repo.name + "=" + .file.name
+          blueprint: '"file"'
+          properties:
+            obj: .file.content
