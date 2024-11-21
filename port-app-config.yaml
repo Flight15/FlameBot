@@ -3,9 +3,7 @@ resources:
     selector:
       query: 'true'
       files:
-        # Note that glob patterns are supported, so you can use wildcards to match multiple files
         - path: '**/testing.json'
-        # The `repos` key can be used to filter the repositories from which the files will be fetched
           repos:
             - "FlameBot"
             - "Node"
