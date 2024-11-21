@@ -6,7 +6,6 @@ resources:
         - path: '**/testing.json'
           repos:
             - "FlameBot"
-            - "Node"
     port:
       entity:
         mappings:
