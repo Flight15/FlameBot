@@ -10,8 +10,8 @@ resources:
     port:
       entity:
         mappings:
-          identifier: .file.path
-          title: .file.name
+          identifier: ".file.path"
+          title: ".file.name"
           blueprint: '"manifest"'
           properties:
-            obj: .file.content
+            obj: ".file.content"
