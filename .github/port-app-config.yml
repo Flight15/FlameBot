@@ -1,14 +1,17 @@
 resources:
-  - kind: repository
+  - kind: file
     selector:
-      query: "true" # JQ boolean query. If evaluated to false - skip syncing the object.
+      query: 'true'
+      files:
+        - path: '**/testing.json'
+          repos:
+            - "FlameBot"
+            - "Node"
     port:
       entity:
         mappings:
-          identifier: .name # The Entity identifier will be the repository name.
-          title: .name
-          blueprint: '"service"'
+          identifier: ".file.path"
+          title: ".file.name"
+          blueprint: '"manifest"'
           properties:
-            url: .html_url
-            description: .description
-
+            obj: ".file.content"
