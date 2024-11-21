@@ -13,3 +13,4 @@
           blueprint: '"file"'
           properties:
             obj: ".file.content"
+
