@@ -5,9 +5,9 @@ resources:
     port:
       entity:
         mappings:
-          identifier: ".name"
-          title: ".name"
+          identifier: .name
+          title: .name
           blueprint: "'service'"
           properties:
-            url: ".html_url"
-            description: ".description"
+            url: .html_url
+            description: .description
