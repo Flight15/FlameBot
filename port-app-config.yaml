@@ -5,10 +5,10 @@ resources:
     port:
       entity:
         mappings:
-          identifier: ".name" # The Entity identifier will be the repository name.
-          title: ".name"
+          identifier: '.name' # The Entity identifier will be the repository name.
+          title: '.name'
           blueprint: '"service"'
           properties:
-            url: ".html_url"
-            description: ".description"
+            url: '.html_url'
+            description: .description
 
