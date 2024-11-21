@@ -9,7 +9,7 @@
     port:
       entity:
         mappings:
-          identifier: .repo.name + "=" + .file.name
+          identifier: ".repo.name + \"=\" + .file.name"
           blueprint: '"file"'
           properties:
-            obj: .file.content
+            obj: ".file.content"
