@@ -7,7 +7,7 @@ resources:
         mappings:
           identifier: ".name"
           title: ".name"
-          blueprint: '"service"'
+          blueprint: "'service'"
           properties:
             url: ".html_url"
             description: ".description"
