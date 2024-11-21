@@ -1,13 +1,1 @@
 resources:
-  - kind: repository
-    selector:
-      query: "true"
-    port:
-      entity:
-        mappings:
-          identifier: .name
-          title: .name
-          blueprint: "'service'"
-          properties:
-            url: .html_url
-            description: .description
