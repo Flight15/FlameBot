@@ -1,16 +1,19 @@
+resources:
   - kind: file
     selector:
       query: 'true'
       files:
+        # Note that glob patterns are supported, so you can use wildcards to match multiple files
         - path: '**/testing.json'
+        # The `repos` key can be used to filter the repositories from which the files will be fetched
           repos:
-            - Node
-            - FlameBot
+            - "FlameBot"
+            - "Node"
     port:
       entity:
         mappings:
-          identifier: ".repo.name + \"=\" + .file.name"
-          blueprint: '"file"'
+          identifier: .file.path
+          title: .file.name
+          blueprint: '"manifest"'
           properties:
-            obj: ".file.content"
-
+            obj: .file.content
