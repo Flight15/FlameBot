@@ -9,6 +9,13 @@ resources:
             "-dev"
           properties:
             obj: .file.content
+            storage_to_project_relation: >-
+              (.repo.name | split("-")[0] ) + "_" + (.file.name  |
+              split(".")[0])
+                + "-dev"
+            team: >- 
+            .file.content.components.terraform | to_entries[] |
+            .value.vars.config.ad_group
       itemsToParse: >-
         .file.content.components.terraform | to_entries[] |
         .value.vars.config.managed_services.storage_accounts
