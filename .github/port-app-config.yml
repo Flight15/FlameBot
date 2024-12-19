@@ -1,16 +1,30 @@
 resources:
   - kind: file
-    selector:
-      query: 'true'
-      files:
-        - path: '**/testing.json'
-          repos:
-            - FlameBot
     port:
       entity:
         mappings:
-          identifier: .repo.name + "-" + .file.path
-          title: .file.name
-          blueprint: '"file"'
+          blueprint: '"azure_storage_account"'
+          identifier: >-
+            (.repo.name | split("-")[0] ) + "_" + "st" + "-" + .item.name +
+            "-dev"
           properties:
-            obj: .file.content
+            containers: .item.additional_containers
+            name: .item.name
+          relations:
+            storage_to_project_relation: >
+              (.repo.name | split("-")[0] ) + "_" + (.file.name  |
+              split(".")[0])
+                + "-dev"
+          team: >-
+            .file.content.components.terraform | to_entries[] |
+            .value.vars.config.ad_group
+          title: '"st-" + .item.name'
+      itemsToParse: >-
+        .file.content.components.terraform | to_entries[] |
+        .value.vars.config.managed_services.storage_accounts
+    selector:
+      files:
+        - path: test_yaml.yaml
+        - repos:
+            - FlameBot
+      query: 'true'
