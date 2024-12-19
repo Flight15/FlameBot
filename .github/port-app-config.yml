@@ -1,27 +1,25 @@
+---
 resources:
   - kind: file
     port:
       entity:
         mappings:
           blueprint: '"file"'
-          identifier: >-
-            (.repo.name | split("-")[0] ) + "_" + "st" + "-" + .item.name +
+          identifier: (.repo.name | split("-")[0] ) + "_" + "st" + "-" + .item.name +
             "-dev"
           properties:
             obj: .file.content
             storage_to_project_relation: >-
-              (.repo.name | split("-")[0] ) + "_" + (.file.name  |
-              split(".")[0])
+              (.repo.name | split("-")[0] ) + "_" +
+              (.file.name  | split(".")[0])
                 + "-dev"
-            team: >- 
-            .file.content.components.terraform | to_entries[] |
-            .value.vars.config.ad_group
-      itemsToParse: >-
-        .file.content.components.terraform | to_entries[] |
+            team: .file.content.components.terraform | to_entries[] |
+              .value.vars.config.ad_group
+      itemsToParse: .file.content.components.terraform | to_entries[] |
         .value.vars.config.managed_services.storage_accounts
     selector:
       files:
         - path: test_yaml.yaml
         - repos:
             - FlameBot
-      query: 'true'
+      query: "true"
