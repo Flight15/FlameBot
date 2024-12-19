@@ -13,6 +13,8 @@ resources:
               (.repo.name | split("-")[0] ) + "_" +
               (.file.name  | split(".")[0])
                 + "-dev"
+            name: .item.name
+            containers: .item.additional_containers
             team: .file.content.components.terraform | to_entries[] |
               .value.vars.config.ad_group
       itemsToParse: .file.content.components.terraform | to_entries[] |
