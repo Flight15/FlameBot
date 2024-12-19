@@ -3,22 +3,12 @@ resources:
     port:
       entity:
         mappings:
-          blueprint: '"azure_storage_account"'
+          blueprint: '"file"'
           identifier: >-
             (.repo.name | split("-")[0] ) + "_" + "st" + "-" + .item.name +
             "-dev"
           properties:
-            containers: .item.additional_containers
-            name: .item.name
-          relations:
-            storage_to_project_relation: >
-              (.repo.name | split("-")[0] ) + "_" + (.file.name  |
-              split(".")[0])
-                + "-dev"
-          team: >-
-            .file.content.components.terraform | to_entries[] |
-            .value.vars.config.ad_group
-          title: '"st-" + .item.name'
+            obj: .file.content
       itemsToParse: >-
         .file.content.components.terraform | to_entries[] |
         .value.vars.config.managed_services.storage_accounts
