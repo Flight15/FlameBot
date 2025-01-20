@@ -1,5 +1,6 @@
-identifier: flame_bot
+identifier: FlameBot
 title: FlameBot
-blueprint: _team
+blueprint: repository
 properties:
-  custom: Hello World
+  custom_1: Hello World
+  custom_2: Bye world
