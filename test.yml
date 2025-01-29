@@ -1,6 +1,0 @@
-identifier: "FlameBot"
-title: FlameBot1
-blueprint: repository
-properties:
-  custom_1: "Hello World"
-  custom_2: Bye world
