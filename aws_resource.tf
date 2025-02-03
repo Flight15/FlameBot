@@ -38,7 +38,7 @@ resource "port_blueprint" "aws_resource" {
     ignore_changes = [
       icon,
       updated_at,
-      updated_by111
+      updated_by
     ]
   }
 
