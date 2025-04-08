@@ -1,0 +1,43 @@
+---
+import:
+  - catalog/project.yaml
+components:
+  terraform:
+    bookshelf: # must match the filename
+      metadata:
+        component: bookshelf
+        inherits:
+          - project-defaults
+      backend:
+        azurerm:
+          key: nordlb-central-dev-bookshelf.tfstate
+      vars:
+        config:
+          name: bookshelf
+
+          description: Bookshelf Demo-Projekt
+          proj_short: bookshelf
+          infomail_recipient: k8s@nordlb.de
+          al_number: AL4145_20210115
+          ad_group: ZAG-AL4145_20210115-Bookshelf-DEV
+          addons:
+            - mailpit
+            - greenmail
+          kubernetes:
+            cpu_quota: 6000m
+            ram_quota: 6Gi
+            namespace: bookshelf
+          deployment:
+            apps:
+              - repo_url: https://github.com/nordlb-cloud/k8s-demo-bookshelf-config
+                repo_ref: development
+            artifactory_team: nordlb-cloud
+          managed_services:
+            postgres: {}
+            postgres_flexible:
+              server_name: bookshelf-demo
+              databases:
+                - name: bookshelf
+            storage_accounts:
+              - name: bookshelf
+                additional_containers: []
