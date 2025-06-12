@@ -1,0 +1,50 @@
+{
+    "identifier": "repository",
+    "title": "Repository",
+    "icon": "Microservice",
+    "schema": {
+      "properties": {
+        "readme": {
+          "title": "README",
+          "type": "string",
+          "format": "markdown",
+          "icon": "DefaultProperty"
+        },
+        "url": {
+          "title": "Repository URL",
+          "type": "string",
+          "format": "url",
+          "icon": "DefaultProperty"
+        },
+        "defaultBranch": {
+          "title": "Default branch",
+          "type": "string",
+          "icon": "DefaultProperty"
+        },
+        "low_count": {
+          "icon": "DefaultProperty",
+          "title": "Low Dependabot count",
+          "type": "number"
+        },
+        "medium_count": {
+          "icon": "DefaultProperty",
+          "title": "Medium Dependabot count",
+          "type": "number"
+        },
+        "high_count": {
+          "icon": "DefaultProperty",
+          "title": "High Dependabot count",
+          "type": "number"
+        },
+        "critical_count": {
+          "icon": "DefaultProperty",
+          "title": "Critical Dependabot count",
+          "type": "number"
+        }
+      },
+      "required": []
+    },
+    "mirrorProperties": {},
+    "calculationProperties": {},
+    "relations": {}
+  }

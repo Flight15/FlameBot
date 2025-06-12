@@ -1,0 +1,9 @@
+environments:
+  frontend:
+    - main
+  backend:
+    - main
+  admin:
+    - demo
+  second:
+    - test

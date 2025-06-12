@@ -1,0 +1,62 @@
+name: Scorecard Update
+
+on:
+  push:
+    paths:
+      - 'scorecards/*.json'
+
+jobs:
+  send_scorecard:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Get API Token
+        id: get_token
+        run: |
+          access_token=$(curl --location --request POST 'https://api.getport.io/v1/auth/access_token' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+              "clientId": "${{ secrets.PORT_CLIENT_ID }}",
+              "clientSecret": "${{ secrets.PORT_CLIENT_SECRET }}"
+          }' | jq '.accessToken' | sed 's/"//g')
+          echo "access_token=$access_token" >> $GITHUB_ENV
+
+      - name: Get specific changed files
+        id: changed-files-specific
+        uses: tj-actions/changed-files@v44
+        with:
+          files: |
+            ./scorecards/*
+
+      - name: Process changed files
+        env:
+          CHANGED_FILES: ${{ steps.changed-files-specific.outputs.all_changed_files }}
+        run: |
+          echo "Changed files: $CHANGED_FILES"
+          error_occurred=false
+          for file in ${CHANGED_FILES}; do
+            filename=$(basename $file .json)
+            content=$(cat $file | jq -c .)
+            response=$(curl -s -o response_body.txt -w "%{http_code}" -X PUT "https://api.getport.io/v1/blueprints/${filename}/scorecards" \
+              -H "Authorization: Bearer ${{ env.access_token }}" \
+              -H "Content-Type: application/json" \
+              -d "$content")
+            if [ "$response" -ne 200 ]; then
+              echo "Failed to send $file. HTTP status code: $response"
+              echo "Response body:"
+              cat response_body.txt
+              rm response_body.txt
+              error_occurred=true
+            else
+              echo "Successfully sent $file."
+              rm response_body.txt
+            fi
+          done
+          if [ "$error_occurred" = true ]; then
+            echo "One or more requests failed."
+            exit 1
+          fi
+        shell: bash

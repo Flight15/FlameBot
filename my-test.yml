@@ -1,0 +1,10 @@
+services:
+  - serviceName: msname
+    dependOn:
+      - msname1
+  - serviceName: msname1
+    dependOn: []
+  - serviceName: msname2
+    dependOn:
+      - msname
+      - msname
