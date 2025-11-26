@@ -1,0 +1,148 @@
+name: Test Job Dependency Conditional Logic
+
+on:
+  workflow_dispatch:
+    inputs:
+      test_scenario:
+        description: 'Which conditional logic to test'
+        required: true
+        type: choice
+        options:
+          - 'negative-check-logic'
+          - 'positive-check-logic'
+        default: 'negative-check-logic'
+      
+      description:
+        description: 'Info: negative = (!=failure), positive = (==success||==skipped)'
+        required: false
+        default: 'See workflow file for details'
+
+jobs:
+  # Prerequisite job with matrix (simulates multi-region deployment)
+  # One region will fail, causing the other to be cancelled
+  prerequisite-job:
+    name: Prerequisite Job (${{ matrix.region }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        region: ['region-a', 'region-b']
+      # fail-fast: true means when one region fails, the other gets cancelled
+      fail-fast: true
+    steps:
+      - name: Start processing
+        run: |
+          echo "Starting task in ${{ matrix.region }}..."
+          sleep 5
+      
+      - name: Process task (region-a will fail)
+        run: |
+          if [[ "${{ matrix.region }}" == "region-a" ]]; then
+            echo "❌ Task failed in ${{ matrix.region }}!"
+            exit 1
+          else
+            echo "Processing in ${{ matrix.region }}..."
+            sleep 30
+            echo "✅ Task completed in ${{ matrix.region }}"
+          fi
+
+  # Dependent job using NEGATIVE check (test != 'failure')
+  dependent-job-negative-check:
+    name: Dependent Job (negative check)
+    runs-on: ubuntu-latest
+    needs: [prerequisite-job]
+    if: ${{ always() && inputs.test_scenario == 'negative-check-logic' && needs.prerequisite-job.result != 'failure' }}
+    steps:
+      - name: Debug results
+        run: |
+          echo "🔍 Prerequisite Results (NEGATIVE check):"
+          echo "  Prerequisite job result: ${{ needs.prerequisite-job.result }}"
+          echo ""
+          echo "Condition evaluation:"
+          echo "  needs.prerequisite-job.result != 'failure': ${{ needs.prerequisite-job.result != 'failure' }}"
+          echo ""
+          echo "Expected: When matrix job has one failure and one cancellation,"
+          echo "the overall result is often 'cancelled', not 'failure'"
+      
+      - name: Execute dependent task
+        run: |
+          echo "⚠️  RUNNING with negative check logic!"
+          echo "This demonstrates checking != 'failure'"
+          echo "The job runs because 'cancelled' != 'failure' is true!"
+
+  # Dependent job using POSITIVE check (test == 'success' || == 'skipped')
+  dependent-job-positive-check:
+    name: Dependent Job (positive check)
+    runs-on: ubuntu-latest
+    needs: [prerequisite-job]
+    if: ${{ always() && inputs.test_scenario == 'positive-check-logic' && (needs.prerequisite-job.result == 'success' || needs.prerequisite-job.result == 'skipped') }}
+    steps:
+      - name: Debug results
+        run: |
+          echo "🔍 Prerequisite Results (POSITIVE check):"
+          echo "  Prerequisite job result: ${{ needs.prerequisite-job.result }}"
+          echo ""
+          echo "Condition evaluation:"
+          echo "  Prerequisite is success or skipped: ${{ needs.prerequisite-job.result == 'success' || needs.prerequisite-job.result == 'skipped' }}"
+          echo ""
+          echo "Expected: When matrix job has failures/cancellations,"
+          echo "this check correctly blocks the dependent job"
+      
+      - name: Execute dependent task
+        run: |
+          echo "✅ RUNNING with positive check logic!"
+          echo "This demonstrates explicit success/skipped checks."
+          echo "This job should NOT run when prerequisites fail!"
+
+  # Summary job to show what happened
+  summary:
+    name: Test Summary
+    runs-on: ubuntu-latest
+    needs: [prerequisite-job, dependent-job-negative-check, dependent-job-positive-check]
+    if: always()
+    steps:
+      - name: Show results
+        run: |
+          echo "============================================"
+          echo "Test Scenario: ${{ inputs.test_scenario }}"
+          echo "============================================"
+          echo ""
+          echo "📊 Job Results:"
+          echo "  prerequisite-job (matrix): ${{ needs.prerequisite-job.result }}"
+          echo "  dependent-job-negative-check: ${{ needs.dependent-job-negative-check.result }}"
+          echo "  dependent-job-positive-check: ${{ needs.dependent-job-positive-check.result }}"
+          echo ""
+          echo "Matrix Strategy Details:"
+          echo "  - Region A: fails after 5 seconds"
+          echo "  - Region B: gets cancelled when Region A fails (fail-fast: true)"
+          echo "  - Overall job result: ${{ needs.prerequisite-job.result }}"
+          echo ""
+          
+          if [[ "${{ inputs.test_scenario }}" == "negative-check-logic" ]]; then
+            if [[ "${{ needs.dependent-job-negative-check.result }}" == "success" ]]; then
+              echo "⚠️  ISSUE DEMONSTRATED!"
+              echo "The dependent job ran even though the matrix job failed/cancelled."
+              echo "This happens because the overall job result is 'cancelled', and"
+              echo "'cancelled' != 'failure' evaluates to true."
+              echo ""
+              echo "In multi-region deployments, this means a deployment could proceed"
+              echo "in one region even when another region's prerequisites failed."
+            else
+              echo "✅ Dependent job was blocked"
+              echo "Result: ${{ needs.dependent-job-negative-check.result }}"
+            fi
+          else
+            if [[ "${{ needs.dependent-job-positive-check.result }}" == "skipped" ]]; then
+              echo "✅ CORRECT BEHAVIOR!"
+              echo "The dependent job was correctly blocked because the matrix job"
+              echo "had failures/cancellations."
+              echo ""
+              echo "This demonstrates the benefit of explicit success/skipped checks."
+              echo "The deployment is safely blocked when prerequisites fail in any region."
+            else
+              echo "⚠️  Dependent job ran (unexpected for positive logic)"
+              echo "Result: ${{ needs.dependent-job-positive-check.result }}"
+            fi
+          fi
+          echo ""
+          echo "============================================"
+
